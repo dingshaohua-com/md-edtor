@@ -10,14 +10,13 @@ const MdEditor: React.FC = () => {
     Editor.make()
       .config((ctx) => {
         ctx.set(rootCtx, root);
-        ctx.set(defaultValueCtx, `hello word`);
+        ctx.set(defaultValueCtx, `hello word111222`);
       })
       .use(commonmark)
   );
 
   useEffect(() => {
     if (!loading) {
-        console.log(123);
       const editor = get();
       console.log('编辑器初始化完成！', editor);
     }

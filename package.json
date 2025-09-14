@@ -14,7 +14,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "build:lib": "tsc -b ./tsconfig.lib.json && vite build",
-    "build:lib:watch": "tsx ./script/watch-build.ts",
     "prepublishOnly": "build:lib"
   },
   "sideEffects": [
