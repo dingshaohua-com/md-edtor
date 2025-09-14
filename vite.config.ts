@@ -7,36 +7,62 @@ import { fileURLToPath } from 'node:url'
 import { glob } from 'glob'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), libInjectCss(), dts({ include: ['lib'], tsconfigPath: resolve(__dirname, "tsconfig.lib.json"), })],
-  build: {
-    lib: {
-      entry: resolve(__dirname, 'lib/main.ts'),
-      formats: ['es']
-    },
-    copyPublicDir: false,
-    rollupOptions: {
-      external: ['react', 'react/jsx-runtime'],
-      input: Object.fromEntries(
-        glob.sync('lib/**/*.{ts,tsx}', {
-          ignore: ["lib/**/*.d.ts"],
-        }).map(file => [
-          // 入口点的名称
-          // lib/nested/foo.ts 变成 nested/foo
-          relative(
-            'lib',
-            file.slice(0, file.length - extname(file).length)
+export default defineConfig(() => {
+  const isLibBuild = process.env.BUILD_MODE === 'lib'
+
+  if (isLibBuild) {
+    // Library build configuration
+    return defineConfig({
+      plugins: [
+        react(),
+        libInjectCss(),
+        dts({
+          include: ['lib'],
+          tsconfigPath: resolve(__dirname, "tsconfig.lib.json"),
+          outDir: 'dist-lib'
+        })
+      ],
+      build: {
+        outDir: 'dist-lib',
+        lib: {
+          entry: resolve(__dirname, 'lib/main.ts'),
+          formats: ['es']
+        },
+        copyPublicDir: false,
+        rollupOptions: {
+          external: ['react', 'react/jsx-runtime'],
+          input: Object.fromEntries(
+            glob.sync('lib/**/*.{ts,tsx}', {
+              ignore: ["lib/**/*.d.ts"],
+            }).map(file => [
+              // 入口点的名称
+              // lib/nested/foo.ts 变成 nested/foo
+              relative(
+                'lib',
+                file.slice(0, file.length - extname(file).length)
+              ),
+              // 入口文件的绝对路径
+              // lib/nested/foo.ts 变成 /project/lib/nested/foo.ts
+              fileURLToPath(new URL(file, import.meta.url))
+            ])
           ),
-          // 入口文件的绝对路径
-          // lib/nested/foo.ts 变成 /project/lib/nested/foo.ts
-          fileURLToPath(new URL(file, import.meta.url))
-        ])
-      ),
-      output: {
-        assetFileNames: 'assets/[name][extname]',
-        entryFileNames: '[name].js',
+          output: {
+            assetFileNames: 'assets/[name][extname]',
+            entryFileNames: '[name].js',
+          }
+        }
+      }
+    })
+  }
+
+  // Default build configuration (for src)
+  return defineConfig({
+    plugins: [react()],
+    build: {
+      outDir: 'dist',
+      rollupOptions: {
+        input: resolve(__dirname, 'index.html')
       }
     }
-  },
-
+  })
 })
