@@ -5,6 +5,7 @@ import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { extname, relative, resolve } from 'path'
 import { fileURLToPath } from 'node:url'
 import { glob } from 'glob'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig(() => {
@@ -15,6 +16,7 @@ export default defineConfig(() => {
     return defineConfig({
       plugins: [
         react(),
+        tailwindcss(),
         libInjectCss(),
         dts({
           include: ['lib'],
@@ -57,7 +59,7 @@ export default defineConfig(() => {
 
   // Default build configuration (for src)
   return defineConfig({
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     build: {
       outDir: 'dist',
       rollupOptions: {

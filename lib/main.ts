@@ -1,4 +1,4 @@
-import MdEditor from './view';
+import MdEditor from '.';
 
 export { MdEditor };
 export default MdEditor;

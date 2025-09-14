@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.md-editor {
+    [data-milkdown-root] {
+        height: 100%;
+
+        .milkdown {
+            height: 100%;
+
+            .editor {
+                height: 100%;
+                outline: none;
+            }
+        }
+    }
+
+}
