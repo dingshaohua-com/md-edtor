@@ -51,6 +51,7 @@
     "@milkdown/react": "^7.15.5",
     "@milkdown/theme-nord": "^7.15.5",
     "@prosemirror-adapter/react": "^0.4.4",
+    "@remixicon/react": "^4.6.0",
     "@tailwindcss/vite": "^4.1.13",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.3.1",

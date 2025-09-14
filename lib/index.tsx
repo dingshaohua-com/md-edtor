@@ -13,10 +13,6 @@ import { ProsemirrorAdapterProvider, usePluginViewFactory } from '@prosemirror-a
 
 const MdEditor: React.FC<MdEditorProps> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
-
-  console.log(pluginViewFactory);
-
-
   const { get, loading } = useEditor((root) => {
     const editor = Editor
       .make()
