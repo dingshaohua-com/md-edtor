@@ -26,3 +26,9 @@ import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 editor.action((ctx) => ctx.get(commandsCtx).call(toggleStrikethroughCommand.key))
 ```
 
+
+## 自定义mark
+除了标准的加粗、斜体，有些特殊的标记，甚至在[GFM扩展的MD语法](https://github.github.com/gfm)中都[不存在](https://github.com/Milkdown/milkdown/issues/914)。  
+这个时候就需要我们自定义了！
+
+我把自定义的标记都放在了 `marks`目录中了，比如下划线等等！
