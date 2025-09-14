@@ -1,2 +1,4 @@
-export { Button } from './components/Button';
-export { Input } from './components/Input';
+import MdEditor from './view';
+
+export { MdEditor };
+export default MdEditor;

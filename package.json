@@ -14,6 +14,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "build:lib": "tsc -b ./tsconfig.lib.json && vite build",
+    "build:lib:watch": "tsx ./script/watch-build.ts",
     "prepublishOnly": "build:lib"
   },
   "sideEffects": [
@@ -29,17 +30,24 @@
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
+    "chalk": "^5.6.2",
+    "chokidar": "^4.0.3",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "glob": "^11.0.3",
     "globals": "^16.3.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tsx": "^4.20.5",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.2",
     "vite-plugin-dts": "^4.5.4",
-    "vite-plugin-lib-inject-css": "^2.2.2",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "vite-plugin-lib-inject-css": "^2.2.2"
+  },
+  "dependencies": {
+    "@milkdown/kit": "^7.15.5",
+    "@milkdown/react": "^7.15.5"
   }
 }
