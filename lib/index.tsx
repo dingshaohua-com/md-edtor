@@ -7,6 +7,7 @@ import type { MdEditorProps } from './types';
 import { cn } from "./utils"
 import { installPlugins } from "./plugins"
 import { ProsemirrorAdapterProvider, usePluginViewFactory } from '@prosemirror-adapter/react';
+import { gfm } from '@milkdown/kit/preset/gfm'
 // import { nord } from '@milkdown/theme-nord';
 
 
@@ -22,6 +23,7 @@ const MdEditor: React.FC<MdEditorProps> = (props) => {
         ctx.set(defaultValueCtx, `hello word`);
       })
       .use(commonmark)
+      .use(gfm)
     installPlugins(editor, pluginViewFactory);
     return editor;
   }, []);

@@ -8,7 +8,7 @@ import { useEffect, useRef, useCallback } from 'react'
 import { RiBold, RiItalic, RiUnderline, RiStrikethrough, RiEmphasisCn } from '@remixicon/react';
 import { cn } from '../../utils';
 import { commandsCtx } from '@milkdown/kit/core';
-import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm'
+import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { checkMarkActive } from './helper'
 
 const View = () => {
@@ -38,6 +38,8 @@ const View = () => {
 
   const editor = get();
 
+
+
   const helper = {
     strong: {
       active: checkMarkActive('strong', editor),
@@ -49,7 +51,9 @@ const View = () => {
     },
     strikeThrough: {
       active: checkMarkActive('strike_through', editor),
-      onClick: () => editor?.action((ctx) => ctx.get(commandsCtx).call(toggleStrikethroughCommand.key))
+      onClick: () => {
+        editor?.action((ctx) => ctx.get(commandsCtx).call(toggleStrikethroughCommand.key))
+      }
     }
   }
 
@@ -59,14 +63,17 @@ const View = () => {
         <RiBold size={18} />
       </div>
       <div className={cn('item', { 'bg-gray-300': helper.emphasis.active })} onClick={helper.emphasis.onClick} onMouseDown={e => e.preventDefault()}>
-        <RiUnderline size={18} />
+        <RiItalic size={18} />
       </div>
       <div className={cn('item', { 'bg-gray-300': helper.strikeThrough.active })} onClick={helper.strikeThrough.onClick} onMouseDown={e => e.preventDefault()}>
         <RiStrikethrough size={18} />
       </div>
+      {/* <div className={cn('item', { 'bg-gray-300': helper.emphasis.active })} onClick={helper.emphasis.onClick} onMouseDown={e => e.preventDefault()}>
+        <RiUnderline size={18} />
+      </div>
       <div className={cn('item', { 'bg-gray-300': helper.strikeThrough.active })} onClick={helper.strikeThrough.onClick} onMouseDown={e => e.preventDefault()}>
         <RiEmphasisCn size={18} />
-      </div>
+      </div> */}
     </div>
   )
 }
