@@ -10,6 +10,7 @@ import { cn } from '../../utils';
 import { commandsCtx } from '@milkdown/kit/core';
 import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { checkMarkActive } from './helper'
+import { toggleUnderlineCommand } from '../../marks/underline'
 
 const View = () => {
   const ref = useRef<HTMLDivElement>(null)
@@ -54,6 +55,12 @@ const View = () => {
       onClick: () => {
         editor?.action((ctx) => ctx.get(commandsCtx).call(toggleStrikethroughCommand.key))
       }
+    },
+    underline: {
+      active: checkMarkActive('underline', editor),
+      onClick: () => {
+        editor?.action((ctx) => ctx.get(commandsCtx).call(toggleUnderlineCommand.key))
+      }
     }
   }
 
@@ -68,12 +75,9 @@ const View = () => {
       <div className={cn('item', { 'bg-gray-300': helper.strikeThrough.active })} onClick={helper.strikeThrough.onClick} onMouseDown={e => e.preventDefault()}>
         <RiStrikethrough size={18} />
       </div>
-      {/* <div className={cn('item', { 'bg-gray-300': helper.emphasis.active })} onClick={helper.emphasis.onClick} onMouseDown={e => e.preventDefault()}>
+      <div className={cn('item', { 'bg-gray-300': helper.underline.active })} onClick={helper.underline.onClick} onMouseDown={e => e.preventDefault()}>
         <RiUnderline size={18} />
       </div>
-      <div className={cn('item', { 'bg-gray-300': helper.strikeThrough.active })} onClick={helper.strikeThrough.onClick} onMouseDown={e => e.preventDefault()}>
-        <RiEmphasisCn size={18} />
-      </div> */}
     </div>
   )
 }
