@@ -1,13 +1,13 @@
 import { BlockProvider } from "@milkdown/kit/plugin/block";
 import { useInstance } from "@milkdown/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import blockImg from "../../images/block.svg";
 
 
 
 export const View = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const tooltipProvider = useRef<BlockProvider>(null);
+  const blockProvider = useRef<BlockProvider>(null);
 
   const [loading, get] = useInstance();
 
@@ -18,18 +18,16 @@ export const View = () => {
     const editor = get();
     if (!editor) return;
 
-    tooltipProvider.current = new BlockProvider({
+    blockProvider.current = new BlockProvider({
       ctx: editor.ctx,
       content: div,
     });
-    
-    // tooltipProvider.current?.update();
 
-    tooltipProvider.current.show();
+    blockProvider.current?.update();
 
 
     return () => {
-      tooltipProvider.current?.destroy();
+      blockProvider.current?.destroy();
     };
   }, [loading]);
 
@@ -42,7 +40,7 @@ export const View = () => {
       >
         <img src={blockImg} alt="block" />
       </div>
-   
+
     </>
   );
 };
