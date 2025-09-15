@@ -1,69 +1,54 @@
-
-import { RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiAddLine, RiDeleteBinLine, RiCodeLine } from '@remixicon/react';
+import {
+  RiH1,
+  RiH2,
+  RiH3,
+  RiTableLine,
+  RiChatQuoteLine,
+  RiSeparator,
+  RiListUnordered,
+  RiListOrdered,
+  RiTodoLine,
+  RiImageLine,
+  RiFunctions,
+  RiAddLine,
+  // RiDeleteBinLine,
+  RiCodeLine,
+} from "@remixicon/react";
 
 function MenuView() {
   return (
-    <div className="slash-menu-block-view">
+    <div className="slash-menu-block-view p-0.5 text-black/80 text-[14px] w-[120px] transition-opacity duration-200 ease-in-out shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_1px_3px_1px_rgba(60,64,67,0.15)] box-border rounded overflow-hidden bg-white">
       <div className="content">
-          <fieldset>
-            <legend style={{ fontSize: 12 }}>节点专属菜单</legend>
-              <div className="slash-view-content-item">
-                <RiDeleteBinLine />
-                删除标题
-              </div>
-              <div className="slash-view-content-item">
-                <RiDeleteBinLine />
-                添加标题
-              </div>
-          </fieldset>
+        {/* <fieldset>
+          <legend style={{ fontSize: 12 }}>节点专属菜单</legend>
+          <div className="slash-view-content-item">
+            <RiDeleteBinLine />
+            删除标题
+          </div>
+          <div className="slash-view-content-item">
+            <RiDeleteBinLine />
+            添加标题
+          </div>
+        </fieldset> */}
 
-        <div className="slash-view-content-item">
+        {/* <div className="slash-view-content-item">
           <RiDeleteBinLine />
           删除
-        </div>
+        </div> */}
 
         <div className="group">
-          <div className="title">
+          <div className="title border-b border-black/[0.08] mb-2.5 pb-1 flex gap-1 items-center">
             <RiAddLine />
             插入
           </div>
-          <div className="items">
-            <div className="item">
-              <RiH1 />
-            </div>
-            <div className="item">
-              <RiH2 />
-            </div>
-            <div className="item">
-              <RiH3 />
-            </div>
-            <div className="item">
-              <RiTableLine />
-            </div>
-            <div className="item">
-              <RiChatQuoteLine />
-            </div>
-            <div className="item">
-              <RiSeparator />
-            </div>
-            <div className="item">
-              <RiListUnordered />
-            </div>
-            <div className="item">
-              <RiListOrdered />
-            </div>
-            <div className="item">
-              <RiTodoLine />
-            </div>
-            <div className="item">
-              <RiImageLine />
-            </div>
-            <div className="item">
-              <RiFunctions />
-            </div>
-            <div className="item">
-              <RiCodeLine />
-            </div>
+          <div className="items grid grid-cols-3 gap-1.5">
+           {
+             [RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiCodeLine].map((Icon, index) => (
+              <div className="item box-border text-xs cursor-pointer border border-black/[0.08] flex items-center justify-center rounded p-1 hover:bg-black/[0.08]" key={index}>
+                <Icon size={14}/>
+              </div>
+            ))
+           }
           </div>
         </div>
       </div>
