@@ -1,10 +1,8 @@
-import type { Ctx } from '@milkdown/kit/ctx'
 import { TooltipProvider } from '@milkdown/kit/plugin/tooltip'
 import { toggleEmphasisCommand, toggleStrongCommand } from '@milkdown/kit/preset/commonmark'
-import { callCommand } from '@milkdown/kit/utils'
 import { useInstance } from '@milkdown/react'
 import { usePluginViewContext } from '@prosemirror-adapter/react'
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef } from 'react'
 import { RiBold, RiItalic, RiUnderline, RiStrikethrough, RiEmphasisCn } from '@remixicon/react';
 import { cn } from '../../utils';
 import { commandsCtx } from '@milkdown/kit/core';
