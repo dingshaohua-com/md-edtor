@@ -23,7 +23,7 @@ export const View = () => {
       content: div,
     });
 
-    blockProvider.current?.update();
+    blockProvider.current.update();
 
 
     return () => {
