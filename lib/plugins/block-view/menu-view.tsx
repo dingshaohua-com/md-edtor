@@ -15,9 +15,9 @@ import {
   RiCodeLine,
 } from "@remixicon/react";
 
-function MenuView() {
+function MenuView(props: { onHide: () => void }) {
   return (
-    <div className="slash-menu-block-view p-0.5 text-black/80 text-[14px] w-[120px] transition-opacity duration-200 ease-in-out shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_1px_3px_1px_rgba(60,64,67,0.15)] box-border rounded overflow-hidden bg-white">
+    <div className="slash-menu-block-view p-0.5 text-black/80 text-sm w-30 transition-opacity duration-200 ease-in-out shadow box-border rounded overflow-hidden bg-white">
       <div className="content">
         {/* <fieldset>
           <legend style={{ fontSize: 12 }}>节点专属菜单</legend>

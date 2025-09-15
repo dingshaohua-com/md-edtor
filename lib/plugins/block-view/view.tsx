@@ -44,8 +44,13 @@ export const View = () => {
   return (
     <>
       <div
-        ref={ref}
-        className=" data-[show=true]:block hidden cursor-pointer transition-all duration-200 absolute z-10 transform-gpu"
+        ref={(node) => {
+          if (node) {
+            refs.setReference(node);
+            ref.current = node;
+          }
+        }}
+        className="data-[show=true]:block hidden cursor-pointer transition-all duration-200 absolute z-10 transform-gpu"
       >
         <img src={blockImg} alt="block" onClick={onClick} />
       </div>
@@ -62,7 +67,7 @@ export const View = () => {
             zIndex: 2,
           }}
         >
-          <MenuView hide={hideMenuView} />
+          <MenuView onHide={hideMenuView} />
         </div>
       )}
     </>
