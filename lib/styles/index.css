@@ -14,4 +14,26 @@
         }
     }
 
+    [data-show] {
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    [data-show='true'] {
+        opacity: 1 !important;
+    }
+
+    [data-show='false'] {
+        opacity: 0;
+        z-index: -1 !important;
+    }
+
+    .ProseMirror-selectednode {
+        background: rgba(0, 0, 0, 0.1);
+
+    }
+
+    .ProseMirror-selectednode ::selection {
+        background: transparent;
+        color: inherit;
+    }
 }

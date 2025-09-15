@@ -11,7 +11,13 @@ import { gfm } from '@milkdown/kit/preset/gfm'
 import { installMarks } from './marks'
 // import { nord } from '@milkdown/theme-nord';
 
+const mdContent = `
+# 这是一篇文章
+这是一篇优秀的文章！
 
+## 简介
+每个人都有一颗善良的新
+`;
 
 const MdEditor: React.FC<MdEditorProps> = (props) => {
   const pluginViewFactory = usePluginViewFactory();
@@ -21,7 +27,7 @@ const MdEditor: React.FC<MdEditorProps> = (props) => {
       // .config(nord)
       .config((ctx) => {
         ctx.set(rootCtx, root);
-        ctx.set(defaultValueCtx, `hello word`);
+        ctx.set(defaultValueCtx, mdContent);
       })
       .use(commonmark)
       .use(gfm);
@@ -33,8 +39,8 @@ const MdEditor: React.FC<MdEditorProps> = (props) => {
 
   useEffect(() => {
     if (!loading) {
-      const editor = get();
-      console.log('编辑器初始化完成！', editor);
+      // const editor = get();
+      console.log('编辑器初始化完成！');
     }
   }, [loading]);
   return <div className={cn("md-editor h-full w-full", props.className)}><Milkdown /></div>;
