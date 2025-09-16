@@ -1,7 +1,8 @@
 import { BlockProvider } from "@milkdown/kit/plugin/block";
 import { useInstance } from "@milkdown/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import blockImg from "../../images/block.svg";
+import { cn } from "../../utils"
 
 
 
@@ -24,21 +25,25 @@ export const View = () => {
     });
 
     blockProvider.current.update();
-
-
     return () => {
       blockProvider.current?.destroy();
     };
   }, [loading]);
+
+  // After clicking, freeze or unfreeze the current blockProvider.
+  const [locked, setLocked] = useState(false);
+  const doLock = () => {
+    setLocked(!locked)
+  }
 
 
   return (
     <>
       <div
         ref={ref}
-        className="cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu"
+        className={cn("cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu", { "bg-amber-600": locked })}
       >
-        <img src={blockImg} alt="block" />
+        <img src={blockImg} alt="block" onClick={() => doLock()} />
       </div>
 
     </>
