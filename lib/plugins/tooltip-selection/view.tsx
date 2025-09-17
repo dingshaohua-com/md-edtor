@@ -9,6 +9,7 @@ import { commandsCtx } from '@milkdown/kit/core';
 import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { checkMarkActive } from './helper'
 import { toggleUnderlineCommand } from '../../marks/underline'
+import { selectedBlockViewSlice } from '../../hooks/use-milkdown-context'
 
 const View = () => {
   const ref = useRef<HTMLDivElement>(null)
@@ -25,7 +26,6 @@ const View = () => {
     tooltipProvider.current = new TooltipProvider({
       content: div,
     })
-
     return () => {
       tooltipProvider.current?.destroy()
     }
@@ -62,10 +62,15 @@ const View = () => {
     }
   }
 
+  const selectedBlockView = editor?.ctx.get(selectedBlockViewSlice);
+  console.log(selectedBlockView);
+  
+
   return (
     <div className="tooltip-selection absolute data-[show=false]:hidden flex items-center justify-center  rounded border border-gray-200 cursor-pointer bg-white box-border p-1 gap-1" ref={ref}>
       <div className={cn('item', { 'bg-gray-300': helper.strong.active })} onClick={helper.strong.onClick} onMouseDown={e => e.preventDefault()}>
         <RiBold size={18} />
+        <span>{selectedBlockView?.toString()}</span>
       </div>
       <div className={cn('item', { 'bg-gray-300': helper.emphasis.active })} onClick={helper.emphasis.onClick} onMouseDown={e => e.preventDefault()}>
         <RiItalic size={18} />

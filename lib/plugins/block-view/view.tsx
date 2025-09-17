@@ -3,6 +3,7 @@ import { useInstance } from "@milkdown/react";
 import { useEffect, useRef, useState } from "react";
 import blockImg from "../../images/block.svg";
 import { cn } from "../../utils"
+import { selectedBlockViewSlice } from "../../hooks/use-milkdown-context"
 
 
 
@@ -33,7 +34,12 @@ export const View = () => {
   // After clicking, freeze or unfreeze the current blockProvider.
   const [locked, setLocked] = useState(false);
   const doLock = () => {
+    // 通过 Milkdown context 通知 tooltip-selection 隐藏
+    const editor = get()!;
+    editor.ctx.set(selectedBlockViewSlice, !locked);
+
     setLocked(!locked)
+
   }
 
 
