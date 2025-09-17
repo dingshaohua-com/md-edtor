@@ -34,11 +34,15 @@ export const View = () => {
   // After clicking, freeze or unfreeze the current blockProvider.
   const [locked, setLocked] = useState(false);
   const doLock = () => {
-    // 通过 Milkdown context 通知 tooltip-selection 隐藏
-    const editor = get()!;
-    editor.ctx.set(selectedBlockViewSlice, !locked);
-
-    setLocked(!locked)
+    setLocked((prevState) => {
+      const newState = !prevState
+      // 通过 Milkdown context 通知 tooltip-selection 隐藏
+      const editor = get()!;
+      editor.ctx.set(selectedBlockViewSlice, newState);
+      console.log('已经更新为：'+newState);
+      
+      return newState;
+    })
 
   }
 

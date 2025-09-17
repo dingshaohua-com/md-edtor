@@ -63,7 +63,7 @@ const View = () => {
   }
 
   const selectedBlockView = editor?.ctx.get(selectedBlockViewSlice);
-  console.log(selectedBlockView);
+  console.log('监听到更新',selectedBlockView);
   
 
   return (
