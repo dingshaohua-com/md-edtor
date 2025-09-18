@@ -18,7 +18,7 @@ import { commandsCtx } from "@milkdown/kit/core";
 import { toggleStrikethroughCommand } from "@milkdown/kit/preset/gfm";
 import { checkMarkActive } from "./helper";
 import { toggleUnderlineCommand } from "../../marks/underline";
-import { selectedBlockViewSlice } from "../../hooks/use-milkdown-context";
+import { TextSelection } from "@milkdown/kit/prose/state";
 
 const View = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -35,14 +35,29 @@ const View = () => {
     }
     tooltipProvider.current = new TooltipProvider({
       content: div,
+      shouldShow:()=>{
+         // 这段代码源自于官方 demo packages/crepe/src/feature/toolbar/index.ts
+        const { doc, selection } = view.state;
+        const { empty, from, to } = selection;
+
+        const isEmptyTextBlock = !doc.textBetween(from, to).length && selection instanceof TextSelection;
+
+        const isNotTextBlock = !(selection instanceof TextSelection);
+
+        const activeElement = (view.dom.getRootNode() as ShadowRoot | Document).activeElement;
+        const isTooltipChildren = div.contains(activeElement);
+
+        const notHasFocus = !view.hasFocus() && !isTooltipChildren;
+
+        const isReadonly = !view.editable;
+
+        if (notHasFocus || isNotTextBlock || empty || isEmptyTextBlock || isReadonly) return false;
+
+
+        return true;
+      }
     });
-    const editor = get();
-    if (editor) {
-      const counterSlice = editor.ctx.use(selectedBlockViewSlice);
-      counterSlice.on((status) => {
-        setSelectedBlockView(status);
-      });
-    }
+   
     return () => {
       tooltipProvider.current?.destroy();
     };
