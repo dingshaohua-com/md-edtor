@@ -5,7 +5,7 @@ import {
 } from "@milkdown/kit/preset/commonmark";
 import { useInstance } from "@milkdown/react";
 import { usePluginViewContext } from "@prosemirror-adapter/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   RiBold,
   RiItalic,
@@ -26,7 +26,6 @@ const View = () => {
 
   const { view, prevState } = usePluginViewContext();
   const [loading, get] = useInstance();
-  const [selectedBlockView, setSelectedBlockView] = useState(false);
 
   useEffect(() => {
     const div = ref.current;
@@ -114,7 +113,6 @@ const View = () => {
         onMouseDown={(e) => e.preventDefault()}
       >
         <RiBold size={18} />
-        <span>{selectedBlockView?.toString()}</span>
       </div>
       <div
         className={cn("item", { "bg-gray-300": helper.emphasis.active })}

@@ -3,7 +3,7 @@ import { useInstance } from "@milkdown/react";
 import { useEffect, useRef, useState } from "react";
 import blockImg from "../../images/block.svg";
 import { cn } from "../../utils";
-import { autoUpdate, useFloating } from "@floating-ui/react";
+import { autoUpdate, useFloating, offset, flip, shift } from "@floating-ui/react";
 import MenuView from "./menu-view";
 
 export const View = () => {
@@ -11,12 +11,46 @@ export const View = () => {
   const ref = useRef<HTMLDivElement>(null);
   const blockProvider = useRef<BlockProvider>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [animationScale, setAnimationScale] = useState(1);
+  const [shouldRender, setShouldRender] = useState(false);
 
   const [loading, get] = useInstance();
 
   const { refs, floatingStyles } = useFloating({
     whileElementsMounted: autoUpdate,
+    placement: 'left',
+    middleware: [
+      offset(5),
+      flip(),
+      shift({ padding: 5 })
+    ]
   });
+
+  // 处理缩放动画和渲染状态
+  useEffect(() => {
+    if (isOpen) {
+      // 打开：先渲染DOM，但完全不可见
+      setShouldRender(true);
+      setAnimationScale(0);
+
+      // 延迟更长时间确保 Floating UI 位置计算完成
+      const timer = setTimeout(() => {
+        setAnimationScale(0.5);
+        requestAnimationFrame(() => {
+          setAnimationScale(1);
+        });
+      }, 50);
+
+      return () => clearTimeout(timer);
+    } else {
+      // 关闭：先缩放动画，然后移除DOM
+      setAnimationScale(0.5);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 100); // 等待动画完成
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
 
 
@@ -69,14 +103,14 @@ export const View = () => {
       <>
         {/* 遮罩层 */}
         <div
-          className={`fixed inset-0 z-[1] transition-opacity duration-100 ${
+          className={`fixed inset-0 z-[1] transition-opacity  ${
             isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
           onClick={hideMenuView}
         />
 
         {/* 菜单内容 */}
-        {isOpen && (
+        {shouldRender && (
           <div
             ref={(node) => {
               if (node) {
@@ -84,10 +118,14 @@ export const View = () => {
                 floatingRef.current = node;
               }
             }}
-            className="animate-menu-in"
+            className="transition-all duration-50 ease-out"
             style={{
               ...floatingStyles,
-              zIndex: 2
+              zIndex: 2,
+              transform: `${floatingStyles.transform || ''} scale(${animationScale})`,
+              transformOrigin: 'center',
+              opacity: animationScale === 0 ? 0 : (animationScale === 0.5 ? 0 : 1),
+              visibility: animationScale === 0 || animationScale === 0.5 ? 'hidden' : 'visible'
             }}
           >
             <MenuView onHide={hideMenuView} />
