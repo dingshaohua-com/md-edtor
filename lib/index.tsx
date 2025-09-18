@@ -1,5 +1,5 @@
 import { commonmark } from '@milkdown/kit/preset/commonmark';
-import { Editor, rootCtx, defaultValueCtx } from '@milkdown/kit/core';
+import { Editor, rootCtx, defaultValueCtx, EditorStatus } from '@milkdown/kit/core';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { useEffect, useState } from 'react';
 import './styles/index.css';
@@ -12,6 +12,7 @@ import { installMarks } from './marks'
 // import { nord } from '@milkdown/theme-nord';
 import { AppCtxProvider, defaultAppCtx, State } from "./hooks/use-app-ctx"
 import { useImmer } from 'use-immer';
+import { selectedBlockViewSlice } from './hooks/use-milkdown-context';
 
 const mdContent = `
 # 这是一篇文章

@@ -12,6 +12,13 @@ export const installTooltipSelection = (editor: Editor, pluginViewFactory: Plugi
   editor
     .config((ctx: Ctx) => {
       ctx.inject(selectedBlockViewSlice);
+    //  selectedBlockViewSlice.on((val) => {
+    //   console.log('选中块变了', val);
+    // });
+
+    // const slice = ctx.get(selectedBlockViewSlice)
+    // console.log(11122, slice.on);
+    
       ctx.set(tooltip.key, {
         view: pluginViewFactory({
           component: View,

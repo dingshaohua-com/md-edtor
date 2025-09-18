@@ -2,10 +2,8 @@ import { BlockProvider } from "@milkdown/kit/plugin/block";
 import { useInstance } from "@milkdown/react";
 import { useEffect, useRef, useState } from "react";
 import blockImg from "../../images/block.svg";
-import { cn } from "../../utils"
-import { selectedBlockViewSlice } from "../../hooks/use-milkdown-context"
-
-
+import { cn } from "../../utils";
+import { selectedBlockViewSlice } from "../../hooks/use-milkdown-context";
 
 export const View = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -35,27 +33,25 @@ export const View = () => {
   const [locked, setLocked] = useState(false);
   const doLock = () => {
     setLocked((prevState) => {
-      const newState = !prevState
       // 通过 Milkdown context 通知 tooltip-selection 隐藏
       const editor = get()!;
-      editor.ctx.set(selectedBlockViewSlice, newState);
-      console.log('已经更新为：'+newState);
-      
+      editor.ctx.update(selectedBlockViewSlice, (prev) => !prev);
+      const newState = !prevState;
       return newState;
-    })
-
-  }
-
+    });
+  };
 
   return (
     <>
       <div
         ref={ref}
-        className={cn("cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu", { "bg-amber-600": locked })}
+        className={cn(
+          "cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu",
+          { "bg-amber-600": locked }
+        )}
       >
         <img src={blockImg} alt="block" onClick={() => doLock()} />
       </div>
-
     </>
   );
 };
