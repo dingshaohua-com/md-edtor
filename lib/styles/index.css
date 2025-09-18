@@ -7,14 +7,6 @@
         0 12px 20px rgba(0, 0, 0, .1);
 }
 
-
-
-/* 移除选中态样式 */
-.milkdown ::selection {
-    background: transparent;
-    color: inherit;
-}
-
 .md-editor {
     [data-milkdown-root] {
         height: 100%;
@@ -44,7 +36,9 @@
 
     .ProseMirror-selectednode {
         background: rgba(0, 0, 0, 0.1);
-
+        &::selection {
+            background: transparent !important;
+            color: inherit !important;
+        }
     }
-
 }
