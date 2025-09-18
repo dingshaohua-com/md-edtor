@@ -44,7 +44,7 @@ export const View = () => {
       return () => clearTimeout(timer);
     } else {
       // 关闭：先缩放动画，然后移除DOM
-      setAnimationScale(0.5);
+      setAnimationScale(0.8);
       const timer = setTimeout(() => {
         setShouldRender(false);
       }, 100); // 等待动画完成
@@ -124,8 +124,8 @@ export const View = () => {
               zIndex: 2,
               transform: `${floatingStyles.transform || ''} scale(${animationScale})`,
               transformOrigin: 'center',
-              opacity: animationScale === 0 ? 0 : (animationScale === 0.5 ? 0 : 1),
-              visibility: animationScale === 0 || animationScale === 0.5 ? 'hidden' : 'visible'
+              opacity: animationScale === 0 ? 0 : (animationScale === 0.8 ? 0 : 1),
+              visibility: animationScale === 0 || animationScale === 0.8 ? 'hidden' : 'visible'
             }}
           >
             <MenuView onHide={hideMenuView} />

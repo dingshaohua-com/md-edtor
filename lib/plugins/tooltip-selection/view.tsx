@@ -104,7 +104,7 @@ const View = () => {
 
   return (
     <div
-      className="tooltip-selection absolute data-[show=false]:hidden flex items-center justify-center  rounded border border-gray-200 cursor-pointer bg-white box-border p-1 gap-1"
+      className="tooltip-selection absolute data-[show=false]:hidden flex items-center justify-center rounded shadow-smooth cursor-pointer bg-white box-border p-1 gap-1"
       ref={ref}
     >
       <div
