@@ -44,7 +44,7 @@ export const View = () => {
   };
 
   const hideMenuView = () => {
-
+    setIsOpen(false);
   }
 
   return (
@@ -65,20 +65,33 @@ export const View = () => {
       </div>
 
       {isOpen && (
-        <div
-          ref={(node) => {
-            if (node) {
-              refs.setFloating(node);
-              floatingRef.current = node;
-            }
-          }}
-          style={{
-            ...floatingStyles,
-            zIndex: 2
-          }}
-        >
-          <MenuView hide={hideMenuView} />
-        </div>
+        <>
+          {/* 遮罩层 */}
+          <div
+            className="fixed inset-0 z-[1]"
+            onClick={hideMenuView}
+            style={{
+              zIndex: 1,
+              backgroundColor: 'transparent'
+            }}
+          />
+
+          {/* 菜单内容 */}
+          <div
+            ref={(node) => {
+              if (node) {
+                refs.setFloating(node);
+                floatingRef.current = node;
+              }
+            }}
+            style={{
+              ...floatingStyles,
+              zIndex: 2
+            }}
+          >
+            <MenuView onHide={hideMenuView} />
+          </div>
+        </>
       )}
     </>
   );
