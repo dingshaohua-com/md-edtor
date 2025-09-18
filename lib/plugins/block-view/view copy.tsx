@@ -3,21 +3,12 @@ import { useInstance } from "@milkdown/react";
 import { useEffect, useRef, useState } from "react";
 import blockImg from "../../images/block.svg";
 import { cn } from "../../utils";
-import { autoUpdate, useFloating } from "@floating-ui/react";
-import MenuView from "./menu-view";
 
 export const View = () => {
-  const floatingRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
   const blockProvider = useRef<BlockProvider>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const [loading, get] = useInstance();
-
-  const { refs, floatingStyles } = useFloating({
-    whileElementsMounted: autoUpdate,
-  });
-
 
   useEffect(() => {
     const div = ref.current;
@@ -26,7 +17,6 @@ export const View = () => {
     const editor = get();
     if (!editor) return;
 
-    // 创建自定义的 BlockProvider
     blockProvider.current = new BlockProvider({
       ctx: editor.ctx,
       content: div,
@@ -38,48 +28,23 @@ export const View = () => {
     };
   }, [loading]);
 
+  // After clicking, freeze or unfreeze the current blockProvider.
+  const [locked, setLocked] = useState(false);
   const doLock = () => {
-    setIsOpen(!isOpen);
-
+    setLocked(!locked);
   };
-
-  const hideMenuView = () => {
-
-  }
 
   return (
     <>
       <div
-        ref={(node) => {
-          if (node) {
-            refs.setReference(node);
-            ref.current = node;
-          }
-        }}
+        ref={ref}
         className={cn(
           "cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu",
-          { "bg-amber-600": isOpen }
+          { "bg-amber-600": locked }
         )}
       >
         <img src={blockImg} alt="block" onClick={() => doLock()} />
       </div>
-
-      {isOpen && (
-        <div
-          ref={(node) => {
-            if (node) {
-              refs.setFloating(node);
-              floatingRef.current = node;
-            }
-          }}
-          style={{
-            ...floatingStyles,
-            zIndex: 2
-          }}
-        >
-          <MenuView hide={hideMenuView} />
-        </div>
-      )}
     </>
   );
 };
