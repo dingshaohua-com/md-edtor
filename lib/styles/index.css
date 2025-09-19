@@ -1,44 +1,42 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-    /* 把自定义阴影注册到 theme */
-    --shadow-smooth: 0 0 0 1px rgba(0, 0, 0, .03),
-        0 3px 6px rgba(0, 0, 0, .1),
-        0 12px 20px rgba(0, 0, 0, .1);
+  /* 把自定义阴影注册到 theme */
+  --shadow-smooth: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 3px 6px rgba(0, 0, 0, 0.1), 0 12px 20px rgba(0, 0, 0, 0.1);
 }
 
 .md-editor {
-    [data-milkdown-root] {
+  [data-milkdown-root] {
+    height: 100%;
+
+    .milkdown {
+      height: 100%;
+
+      .editor {
         height: 100%;
-
-        .milkdown {
-            height: 100%;
-
-            .editor {
-                height: 100%;
-                outline: none;
-            }
-        }
+        outline: none;
+      }
     }
+  }
 
-    [data-show] {
-        transition: opacity 0.2s ease-in-out;
-    }
+  [data-show] {
+    transition: opacity 0.2s ease-in-out;
+  }
 
-    [data-show='true'] {
-        opacity: 1 !important;
-    }
+  [data-show='true'] {
+    opacity: 1 !important;
+  }
 
-    [data-show='false'] {
-        opacity: 0;
-        z-index: -1 !important;
-    }
+  [data-show='false'] {
+    opacity: 0;
+    z-index: -1 !important;
+  }
 
-    .ProseMirror-selectednode {
-        background: rgba(0, 0, 0, 0.1);
-        &::selection {
-            background: transparent !important;
-            color: inherit !important;
-        }
+  .ProseMirror-selectednode {
+    background: rgba(0, 0, 0, 0.1);
+    &::selection {
+      background: transparent !important;
+      color: inherit !important;
     }
+  }
 }

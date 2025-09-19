@@ -22,7 +22,4 @@ export const toggleUnderlineCommand = $command('ToggleUnderline', (ctx) => () =>
 });
 
 /* ------------- 一键启用 ------------- */
-export const underline = [
-  underlineMark,
-  toggleUnderlineCommand,
-];
+export const underline = [underlineMark, toggleUnderlineCommand];
