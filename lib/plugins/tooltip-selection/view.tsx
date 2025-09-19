@@ -1,24 +1,15 @@
-import { TooltipProvider } from "@milkdown/kit/plugin/tooltip";
-import {
-  toggleEmphasisCommand,
-  toggleStrongCommand,
-} from "@milkdown/kit/preset/commonmark";
-import { useInstance } from "@milkdown/react";
-import { usePluginViewContext } from "@prosemirror-adapter/react";
-import { useEffect, useRef } from "react";
-import {
-  RiBold,
-  RiItalic,
-  RiUnderline,
-  RiStrikethrough,
-  RiEmphasisCn,
-} from "@remixicon/react";
-import { cn } from "../../utils";
-import { commandsCtx } from "@milkdown/kit/core";
-import { toggleStrikethroughCommand } from "@milkdown/kit/preset/gfm";
-import { checkMarkActive } from "./helper";
-import { toggleUnderlineCommand } from "../../marks/underline";
-import { TextSelection } from "@milkdown/kit/prose/state";
+import { cn } from '../../utils';
+import { useEffect, useRef } from 'react';
+import { checkMarkActive } from './helper';
+import { useInstance } from '@milkdown/react';
+import { commandsCtx } from '@milkdown/kit/core';
+import { TextSelection } from '@milkdown/kit/prose/state';
+import { toggleUnderlineCommand } from '../../marks/underline';
+import { TooltipProvider } from '@milkdown/kit/plugin/tooltip';
+import { usePluginViewContext } from '@prosemirror-adapter/react';
+import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
+import { RiBold, RiItalic, RiStrikethrough, RiUnderline } from '@remixicon/react';
+import { toggleEmphasisCommand, toggleStrongCommand } from '@milkdown/kit/preset/commonmark';
 
 const View = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -34,8 +25,8 @@ const View = () => {
     }
     tooltipProvider.current = new TooltipProvider({
       content: div,
-      shouldShow:()=>{
-         // 这段代码源自于官方 demo packages/crepe/src/feature/toolbar/index.ts
+      shouldShow: () => {
+        // 这段代码源自于官方 demo packages/crepe/src/feature/toolbar/index.ts
         const { doc, selection } = view.state;
         const { empty, from, to } = selection;
 
@@ -52,11 +43,10 @@ const View = () => {
 
         if (notHasFocus || isNotTextBlock || empty || isEmptyTextBlock || isReadonly) return false;
 
-
         return true;
-      }
+      },
     });
-   
+
     return () => {
       tooltipProvider.current?.destroy();
     };
@@ -70,69 +60,39 @@ const View = () => {
 
   const helper = {
     strong: {
-      active: checkMarkActive("strong", editor),
-      onClick: () =>
-        editor?.action((ctx) =>
-          ctx.get(commandsCtx).call(toggleStrongCommand.key)
-        ),
+      active: checkMarkActive('strong', editor),
+      onClick: () => editor?.action((ctx) => ctx.get(commandsCtx).call(toggleStrongCommand.key)),
     },
     emphasis: {
-      active: checkMarkActive("emphasis", editor),
-      onClick: () =>
-        editor?.action((ctx) =>
-          ctx.get(commandsCtx).call(toggleEmphasisCommand.key)
-        ),
+      active: checkMarkActive('emphasis', editor),
+      onClick: () => editor?.action((ctx) => ctx.get(commandsCtx).call(toggleEmphasisCommand.key)),
     },
     strikeThrough: {
-      active: checkMarkActive("strike_through", editor),
+      active: checkMarkActive('strike_through', editor),
       onClick: () => {
-        editor?.action((ctx) =>
-          ctx.get(commandsCtx).call(toggleStrikethroughCommand.key)
-        );
+        editor?.action((ctx) => ctx.get(commandsCtx).call(toggleStrikethroughCommand.key));
       },
     },
     underline: {
-      active: checkMarkActive("underline", editor),
+      active: checkMarkActive('underline', editor),
       onClick: () => {
-        editor?.action((ctx) =>
-          ctx.get(commandsCtx).call(toggleUnderlineCommand.key)
-        );
+        editor?.action((ctx) => ctx.get(commandsCtx).call(toggleUnderlineCommand.key));
       },
     },
   };
 
-
   return (
-    <div
-      className="tooltip-selection absolute data-[show=false]:hidden flex items-center justify-center rounded shadow-smooth cursor-pointer bg-white box-border p-1 gap-1"
-      ref={ref}
-    >
-      <div
-        className={cn("item", { "bg-gray-300": helper.strong.active })}
-        onClick={helper.strong.onClick}
-        onMouseDown={(e) => e.preventDefault()}
-      >
+    <div className="tooltip-selection absolute data-[show=false]:hidden flex items-center justify-center rounded shadow-smooth cursor-pointer bg-white box-border p-1 gap-1" ref={ref}>
+      <div className={cn('item', { 'bg-gray-300': helper.strong.active })} onClick={helper.strong.onClick} onMouseDown={(e) => e.preventDefault()}>
         <RiBold size={18} />
       </div>
-      <div
-        className={cn("item", { "bg-gray-300": helper.emphasis.active })}
-        onClick={helper.emphasis.onClick}
-        onMouseDown={(e) => e.preventDefault()}
-      >
+      <div className={cn('item', { 'bg-gray-300': helper.emphasis.active })} onClick={helper.emphasis.onClick} onMouseDown={(e) => e.preventDefault()}>
         <RiItalic size={18} />
       </div>
-      <div
-        className={cn("item", { "bg-gray-300": helper.strikeThrough.active })}
-        onClick={helper.strikeThrough.onClick}
-        onMouseDown={(e) => e.preventDefault()}
-      >
+      <div className={cn('item', { 'bg-gray-300': helper.strikeThrough.active })} onClick={helper.strikeThrough.onClick} onMouseDown={(e) => e.preventDefault()}>
         <RiStrikethrough size={18} />
       </div>
-      <div
-        className={cn("item", { "bg-gray-300": helper.underline.active })}
-        onClick={helper.underline.onClick}
-        onMouseDown={(e) => e.preventDefault()}
-      >
+      <div className={cn('item', { 'bg-gray-300': helper.underline.active })} onClick={helper.underline.onClick} onMouseDown={(e) => e.preventDefault()}>
         <RiUnderline size={18} />
       </div>
     </div>

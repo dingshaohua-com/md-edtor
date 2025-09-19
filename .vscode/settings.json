@@ -1,0 +1,19 @@
+{
+  // 1. 让插件生效（如果还没开）
+  "cSpell.enabled": true,
+
+  // 2. 把你认为“合法”的单词扔进去，大小写不敏感
+  "cSpell.words": [
+    "milkdown",
+    "remixicon",
+    "commonmark"
+  ],
+
+  // 3. （可选）整个文件都跳过拼写检查
+  // "cSpell.ignorePaths": ["**/*.snap", "**/pnpm-lock.yaml"],
+
+  // 4. （可选）单行/多行临时忽略
+  // cspell:disable-next-line
+  // cspell:disable
+  // cspell:enable
+}

@@ -1,19 +1,4 @@
-import {
-  RiH1,
-  RiH2,
-  RiH3,
-  RiTableLine,
-  RiChatQuoteLine,
-  RiSeparator,
-  RiListUnordered,
-  RiListOrdered,
-  RiTodoLine,
-  RiImageLine,
-  RiFunctions,
-  RiAddLine,
-  // RiDeleteBinLine,
-  RiCodeLine,
-} from "@remixicon/react";
+import { RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiAddLine, RiCodeLine } from '@remixicon/react';
 
 function MenuView(props: { onHide: () => void }) {
   return (
@@ -42,13 +27,11 @@ function MenuView(props: { onHide: () => void }) {
             插入
           </div>
           <div className="items grid grid-cols-3 gap-1.5">
-            {
-              [RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiCodeLine].map((Icon, index) => (
-                <div className="item box-border text-xs cursor-pointer border border-black/[0.08] flex items-center justify-center rounded p-1 hover:bg-black/[0.08]" key={index}>
-                  <Icon size={14} />
-                </div>
-              ))
-            }
+            {[RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiCodeLine].map((Icon, index) => (
+              <div className="item box-border text-xs cursor-pointer border border-black/[0.08] flex items-center justify-center rounded p-1 hover:bg-black/[0.08]" key={index}>
+                <Icon size={14} />
+              </div>
+            ))}
           </div>
         </div>
       </div>

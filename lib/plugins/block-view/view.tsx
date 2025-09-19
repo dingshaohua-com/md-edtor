@@ -1,10 +1,10 @@
-import { BlockProvider } from "@milkdown/kit/plugin/block";
-import { useInstance } from "@milkdown/react";
-import { useEffect, useRef, useState } from "react";
-import blockImg from "../../images/block.svg";
-import { cn } from "../../utils";
-import { autoUpdate, useFloating, offset, flip, shift } from "@floating-ui/react";
-import MenuView from "./menu-view";
+import { cn } from '../../utils';
+import MenuView from './menu-view';
+import { useInstance } from '@milkdown/react';
+import blockImg from '../../images/block.svg';
+import { useEffect, useRef, useState } from 'react';
+import { BlockProvider } from '@milkdown/kit/plugin/block';
+import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
 
 export const View = () => {
   const floatingRef = useRef<HTMLDivElement>(null);
@@ -19,11 +19,7 @@ export const View = () => {
   const { refs, floatingStyles } = useFloating({
     whileElementsMounted: autoUpdate,
     placement: 'left',
-    middleware: [
-      offset(5),
-      flip(),
-      shift({ padding: 5 })
-    ]
+    middleware: [offset(5), flip(), shift({ padding: 5 })],
   });
 
   // 处理缩放动画和渲染状态
@@ -52,9 +48,6 @@ export const View = () => {
     }
   }, [isOpen]);
 
-
-
-
   useEffect(() => {
     const div = ref.current;
     if (loading || !div) return;
@@ -76,12 +69,11 @@ export const View = () => {
 
   const doLock = () => {
     setIsOpen(!isOpen);
-
   };
 
   const hideMenuView = () => {
     setIsOpen(false);
-  }
+  };
 
   return (
     <>
@@ -92,22 +84,14 @@ export const View = () => {
             ref.current = node;
           }
         }}
-        className={cn(
-          "cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu",
-          { "bg-gray-100": isOpen }
-        )}
+        className={cn('cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu', { 'bg-gray-100': isOpen })}
       >
         <img src={blockImg} alt="block" onClick={() => doLock()} />
       </div>
 
       <>
         {/* 遮罩层 */}
-        <div
-          className={`fixed inset-0 z-[1] transition-opacity  ${
-            isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          }`}
-          onClick={hideMenuView}
-        />
+        <div className={`fixed inset-0 z-[1] transition-opacity  ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} onClick={hideMenuView} />
 
         {/* 菜单内容 */}
         {shouldRender && (
@@ -124,8 +108,8 @@ export const View = () => {
               zIndex: 2,
               transform: `${floatingStyles.transform || ''} scale(${animationScale})`,
               transformOrigin: 'center',
-              opacity: animationScale === 0 ? 0 : (animationScale === 0.8 ? 0 : 1),
-              visibility: animationScale === 0 || animationScale === 0.8 ? 'hidden' : 'visible'
+              opacity: animationScale === 0 ? 0 : animationScale === 0.8 ? 0 : 1,
+              visibility: animationScale === 0 || animationScale === 0.8 ? 'hidden' : 'visible',
             }}
           >
             <MenuView onHide={hideMenuView} />
