@@ -84,7 +84,7 @@ export const View = () => {
             ref.current = node;
           }
         }}
-        className={cn('cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu', { 'bg-gray-100': isOpen })}
+        className={cn('fi cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu', { 'bg-gray-100': isOpen })}
       >
         <img src={blockImg} alt="block" onClick={() => doLock()} />
       </div>
