@@ -13,6 +13,7 @@ export const View = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [animationScale, setAnimationScale] = useState(1);
   const [shouldRender, setShouldRender] = useState(false);
+  
 
   const [loading, get] = useInstance();
 
@@ -68,8 +69,10 @@ export const View = () => {
     };
   }, [loading]);
 
+
   const doLock = () => {
     setIsOpen(!isOpen);
+    
   };
 
   const hideMenuView = () => {
