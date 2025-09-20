@@ -20,6 +20,7 @@ export const View = () => {
     whileElementsMounted: autoUpdate,
     placement: 'left',
     middleware: [offset(5), flip(), shift({ padding: 5 })],
+    strategy: 'fixed', // 关键配置
   });
 
   // 处理缩放动画和渲染状态
@@ -84,7 +85,7 @@ export const View = () => {
             ref.current = node;
           }
         }}
-        className={cn('fi cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu', { 'bg-gray-100': isOpen })}
+        className={cn('cursor-pointer items-center justify-center gap-0.5 transition-all duration-200 absolute z-10 transform-gpu', { 'bg-gray-100': isOpen })}
       >
         <img src={blockImg} alt="block" onClick={() => doLock()} />
       </div>

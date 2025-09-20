@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'github-markdown-css/github-markdown-light.css';
 
 @theme {
   /* 把自定义阴影注册到 theme */
@@ -33,7 +34,7 @@
   }
 
   .ProseMirror{
-    blockquote {
+    /* blockquote {
       position: relative;
       padding-left: 40px;
       padding-top: 0;
@@ -104,23 +105,20 @@
 
         &::before {
           content: counter(list-item) '. ';
-          /* 对于 <ol>，显示 "1. "、"2. " */
           position: absolute;
           left: 0;
           color: red;
-          /* 自定义颜色 */
           font-weight: bold;
-          /* 加粗 */
         }
       }
-    }
+    } */
   }
 
   .ProseMirror-selectednode {
     background: rgba(0, 0, 0, 0.1);
     &::selection {
-      background: transparent !important;
-      color: inherit !important;
+      background: transparent;
+      color: inherit;
     }
   }
 }

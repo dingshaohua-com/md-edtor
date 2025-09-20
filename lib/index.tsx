@@ -20,6 +20,13 @@ const mdContent = `
 
 ## 简介
 每个人都有一颗善良的新f，你老是看到你发克里斯朵夫反动势力看分开了多少分就打算离开房间里的思考放家里看电视发了快递师傅，了就打算发来的开始放家里的课时费的苏里科夫
+
+* 呵呵
+* 哈哈
+
+1. 嘻嘻
+2. 额呵呵
+
 ## 简介
 每个人都有一颗善良的新f，你老是看到你发克里斯朵夫反动势力看分开了多少分就打算离开房间里的思考放家里看电视发了快递师傅，了就打算发来的开始放家里的课时费的苏里科夫
 ## 简介
@@ -61,7 +68,7 @@ const MdEditor: React.FC<MdEditorProps> = (props) => {
   }, [loading]);
   return (
     <AppCtx value={{ state, setState }}>
-      <div className={cn('md-editor h-full w-full overflow-y-auto', props.className)}>
+      <div className={cn('md-editor h-full w-full overflow-y-auto relative px-4 markdown-body', props.className)}>
         <Milkdown />
       </div>
     </AppCtx>
