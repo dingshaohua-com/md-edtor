@@ -3,7 +3,7 @@ import MenuView from './menu-view';
 import { useInstance } from '@milkdown/react';
 import blockImg from '../../images/block.svg';
 import { useEffect, useRef, useState } from 'react';
-import { BlockProvider } from '@milkdown/kit/plugin/block';
+import { BlockProvider, blockServiceInstance } from '@milkdown/kit/plugin/block';
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
 
 export const View = () => {
@@ -13,7 +13,8 @@ export const View = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [animationScale, setAnimationScale] = useState(1);
   const [shouldRender, setShouldRender] = useState(false);
-  
+  const [currentBlock, setCurrentBlock] = useState<any>(null);
+
 
   const [loading, get] = useInstance();
 
@@ -23,6 +24,24 @@ export const View = () => {
     middleware: [offset(5), flip(), shift({ padding: 5 })],
     strategy: 'fixed', // 关键配置
   });
+
+  const doSome = () => {
+    const editor = get()!;
+    const service = editor.ctx.get(blockServiceInstance.key);
+    // 保存原始的 bind 方法
+    const originalBind = service.bind;
+    // 重写 bind 方法
+    service.bind = (ctx, notify) => {
+      // 包装 notify 函数
+      const wrappedNotify = (message: any) => {
+        console.log(message.active.node.content.size);
+        // 调用原始 notify
+        notify(message);
+      };
+      // 调用原始 bind
+      return originalBind.call(service, ctx, wrappedNotify);
+    };
+  }
 
   // 处理缩放动画和渲染状态
   useEffect(() => {
@@ -57,6 +76,8 @@ export const View = () => {
     const editor = get();
     if (!editor) return;
 
+    doSome();
+
     // 创建自定义的 BlockProvider
     blockProvider.current = new BlockProvider({
       ctx: editor.ctx,
@@ -64,6 +85,10 @@ export const View = () => {
     });
 
     blockProvider.current.update();
+    // setTimeout(() => {
+      
+    // })
+
     return () => {
       blockProvider.current?.destroy();
     };
@@ -72,7 +97,47 @@ export const View = () => {
 
   const doLock = () => {
     setIsOpen(!isOpen);
-    
+
+    // try {
+    //   const editor = get()!;
+    //   const service = editor.ctx.get(blockServiceInstance.key);
+    //   console.log('Block service methods:', Object.getOwnPropertyNames(service));
+
+    //   // 直接从编辑器获取当前选择的节点
+    //   const editorView = (editor as any).view;
+    //   if (editorView) {
+    //     const { state } = editorView;
+    //     const { selection } = state;
+    //     const { $from } = selection;
+
+    //     // 获取当前块级节点
+    //     const node = $from.node($from.depth);
+    //     const isEmpty = node.content.size === 0;
+    //     const textContent = node.textContent || '';
+
+    //     console.log('Current node info:', {
+    //       type: node.type.name,
+    //       isEmpty: isEmpty,
+    //       textContent: textContent,
+    //       contentSize: node.content.size
+    //     });
+
+    //     // 更新状态
+    //     setCurrentBlock({
+    //       type: node.type.name,
+    //       isEmpty: isEmpty,
+    //       textContent: textContent,
+    //       size: node.content.size
+    //     });
+    //   } else {
+    //     console.log('Cannot access editor view');
+    //     setCurrentBlock({ type: 'no-view', isEmpty: true });
+    //   }
+    // } catch (error) {
+    //   console.error('Error getting block info:', error);
+    //   setCurrentBlock({ type: 'error', isEmpty: true });
+    // }
+
   };
 
   const hideMenuView = () => {
