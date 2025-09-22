@@ -3,18 +3,18 @@ import MenuView from './menu-view';
 import { useInstance } from '@milkdown/react';
 import blockImg from '../../images/block.svg';
 import { useEffect, useRef, useState } from 'react';
-import { BlockProvider, blockServiceInstance } from '@milkdown/kit/plugin/block';
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
+import { BlockProvider } from '@milkdown/kit/plugin/block';
+import { useBlockNotifySignal } from '../../hooks/use-block-notify';
 
 export const View = () => {
+  const {msg} = useBlockNotifySignal();
   const floatingRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
   const blockProvider = useRef<BlockProvider>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [animationScale, setAnimationScale] = useState(1);
   const [shouldRender, setShouldRender] = useState(false);
-  const [currentBlock, setCurrentBlock] = useState<any>(null);
-
 
   const [loading, get] = useInstance();
 
@@ -25,23 +25,6 @@ export const View = () => {
     strategy: 'fixed', // 关键配置
   });
 
-  const doSome = () => {
-    const editor = get()!;
-    const service = editor.ctx.get(blockServiceInstance.key);
-    // 保存原始的 bind 方法
-    const originalBind = service.bind;
-    // 重写 bind 方法
-    service.bind = (ctx, notify) => {
-      // 包装 notify 函数
-      const wrappedNotify = (message: any) => {
-        console.log(message.active.node.content.size);
-        // 调用原始 notify
-        notify(message);
-      };
-      // 调用原始 bind
-      return originalBind.call(service, ctx, wrappedNotify);
-    };
-  }
 
   // 处理缩放动画和渲染状态
   useEffect(() => {
@@ -76,8 +59,6 @@ export const View = () => {
     const editor = get();
     if (!editor) return;
 
-    doSome();
-
     // 创建自定义的 BlockProvider
     blockProvider.current = new BlockProvider({
       ctx: editor.ctx,
@@ -86,7 +67,7 @@ export const View = () => {
 
     blockProvider.current.update();
     // setTimeout(() => {
-      
+
     // })
 
     return () => {
@@ -94,9 +75,17 @@ export const View = () => {
     };
   }, [loading]);
 
+  //   effect(() => {
+  //   console.log("currentTime 变化了：", msg);
+  // });
+
+  // console.log(1111, msg);
+  
 
   const doLock = () => {
     setIsOpen(!isOpen);
+    console.log(11111, msg);
+    
 
     // try {
     //   const editor = get()!;
@@ -137,12 +126,14 @@ export const View = () => {
     //   console.error('Error getting block info:', error);
     //   setCurrentBlock({ type: 'error', isEmpty: true });
     // }
-
   };
 
   const hideMenuView = () => {
     setIsOpen(false);
   };
+
+  console.log(msg);
+  
 
   return (
     <>
