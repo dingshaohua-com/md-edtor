@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
 import { BlockProvider } from '@milkdown/kit/plugin/block';
 import { useBlockNotifySignal } from '../../hooks/use-block-notify';
+import { effect } from '@preact-signals/safe-react';
 
 export const View = () => {
   const {msg} = useBlockNotifySignal();
@@ -85,54 +86,15 @@ export const View = () => {
   const doLock = () => {
     setIsOpen(!isOpen);
     console.log(11111, msg);
-    
-
-    // try {
-    //   const editor = get()!;
-    //   const service = editor.ctx.get(blockServiceInstance.key);
-    //   console.log('Block service methods:', Object.getOwnPropertyNames(service));
-
-    //   // 直接从编辑器获取当前选择的节点
-    //   const editorView = (editor as any).view;
-    //   if (editorView) {
-    //     const { state } = editorView;
-    //     const { selection } = state;
-    //     const { $from } = selection;
-
-    //     // 获取当前块级节点
-    //     const node = $from.node($from.depth);
-    //     const isEmpty = node.content.size === 0;
-    //     const textContent = node.textContent || '';
-
-    //     console.log('Current node info:', {
-    //       type: node.type.name,
-    //       isEmpty: isEmpty,
-    //       textContent: textContent,
-    //       contentSize: node.content.size
-    //     });
-
-    //     // 更新状态
-    //     setCurrentBlock({
-    //       type: node.type.name,
-    //       isEmpty: isEmpty,
-    //       textContent: textContent,
-    //       size: node.content.size
-    //     });
-    //   } else {
-    //     console.log('Cannot access editor view');
-    //     setCurrentBlock({ type: 'no-view', isEmpty: true });
-    //   }
-    // } catch (error) {
-    //   console.error('Error getting block info:', error);
-    //   setCurrentBlock({ type: 'error', isEmpty: true });
-    // }
   };
 
   const hideMenuView = () => {
     setIsOpen(false);
   };
 
-  console.log(msg);
+    effect(() => {
+    console.log('currentTime11 变化了：', msg.value);
+  });
   
 
   return (

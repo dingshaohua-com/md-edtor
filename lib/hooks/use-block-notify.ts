@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useInstance } from '@milkdown/react';
-import { effect, useSignal } from '@preact-signals/safe-react';
+import { useSignal } from '@preact-signals/safe-react';
 import { blockServiceInstance, type BlockServiceMessageType } from '@milkdown/kit/plugin/block';
 
 export const useBlockNotify = () => {
@@ -42,9 +42,10 @@ export const useBlockNotifySignal = () => {
     service.bind = (ctx, notify) => {
       // 包装 notify 函数
       const wrappedNotify = (message: BlockServiceMessageType) => {
+        console.log('准备赋值前，当前值：', msg.value);
         msg.value = message;
-        // console.log('重新赋值了');
-        
+        console.log('重新赋值了，新值：', msg.value);
+
         // 调用原始 notify
         notify(message);
       };
@@ -52,9 +53,5 @@ export const useBlockNotifySignal = () => {
       return originalBind.call(service, ctx, wrappedNotify);
     };
   }, [loading, get, msg]);
-
-  effect(() => {
-    console.log('currentTime11 变化了：', msg);
-  });
   return { msg };
 };
