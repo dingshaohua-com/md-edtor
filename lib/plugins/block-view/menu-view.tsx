@@ -7,9 +7,21 @@ import { useInstance } from '@milkdown/react';
 import { commandsCtx } from '@milkdown/kit/core'
 import { icons } from "../../utils"
 import type { Icon } from '../../types';
+import { selectedBlockViewCtx } from '../../hooks/use-milkdown-context';
+import { memo } from 'react';
 
-function MenuView(props: { onHide: () => void }) {
+const MenuView = memo(() => {
   const [_, get] = useInstance();
+  const editor = get()!;
+
+  // 通过切片的方式，获取milkdown的useContext-selectedBlockView，即当前选中的块（我在父组件存的）
+  const selectedBlockViewSlice = editor.ctx.use(selectedBlockViewCtx)
+  const selectedBlockView = selectedBlockViewSlice.get()!;
+
+  if (selectedBlockView.type === 'show') {
+    console.log(selectedBlockView.active.node.type);
+  }
+
 
 
   const onClick = ({ key }: Icon) => {
@@ -65,6 +77,8 @@ function MenuView(props: { onHide: () => void }) {
       </div>
     </div>
   );
-}
+})
+
+MenuView.displayName = 'MenuView';
 
 export default MenuView;

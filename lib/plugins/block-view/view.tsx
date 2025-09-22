@@ -4,12 +4,11 @@ import { useInstance } from '@milkdown/react';
 import blockImg from '../../images/block.svg';
 import { useEffect, useRef, useState } from 'react';
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
-import { BlockProvider } from '@milkdown/kit/plugin/block';
-import { useBlockNotifySignal } from '../../hooks/use-block-notify';
-import { effect } from '@preact-signals/safe-react';
+import { BlockProvider, blockServiceInstance, type BlockServiceMessageType } from '@milkdown/kit/plugin/block';
+import type { Editor } from '@milkdown/kit/core';
+import { selectedBlockViewCtx } from '../../hooks/use-milkdown-context';
 
 export const View = () => {
-  const {msg} = useBlockNotifySignal();
   const floatingRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
   const blockProvider = useRef<BlockProvider>(null);
@@ -25,6 +24,25 @@ export const View = () => {
     middleware: [offset(5), flip(), shift({ padding: 5 })],
     strategy: 'fixed', // 关键配置
   });
+
+  // 通过切片的方式，定义和使用milkdown的useContext
+  const blockNotify = (editor: Editor) => {
+    const selectedBlockViewSlice = editor.ctx.use(selectedBlockViewCtx);
+    const service = editor.ctx.get(blockServiceInstance.key);
+    // 保存原始的 bind 方法
+    const originalBind = service.bind;
+    // 重写 bind 方法
+    service.bind = (ctx, notify) => {
+      // 包装 notify 函数
+      const wrappedNotify = (message: BlockServiceMessageType) => {
+        selectedBlockViewSlice.update(_ => message)
+        // 调用原始 notify
+        notify(message);
+      };
+      // 调用原始 bind
+      return originalBind.call(service, ctx, wrappedNotify);
+    };
+  }
 
 
   // 处理缩放动画和渲染状态
@@ -60,6 +78,8 @@ export const View = () => {
     const editor = get();
     if (!editor) return;
 
+    blockNotify(editor);
+
     // 创建自定义的 BlockProvider
     blockProvider.current = new BlockProvider({
       ctx: editor.ctx,
@@ -67,35 +87,21 @@ export const View = () => {
     });
 
     blockProvider.current.update();
-    // setTimeout(() => {
-
-    // })
 
     return () => {
       blockProvider.current?.destroy();
     };
   }, [loading]);
 
-  //   effect(() => {
-  //   console.log("currentTime 变化了：", msg);
-  // });
-
-  // console.log(1111, msg);
-  
 
   const doLock = () => {
     setIsOpen(!isOpen);
-    console.log(11111, msg);
   };
 
   const hideMenuView = () => {
     setIsOpen(false);
   };
 
-    effect(() => {
-    console.log('currentTime11 变化了：', msg.value);
-  });
-  
 
   return (
     <>
@@ -134,7 +140,7 @@ export const View = () => {
               visibility: animationScale === 0 || animationScale === 0.8 ? 'hidden' : 'visible',
             }}
           >
-            <MenuView onHide={hideMenuView} />
+            <MenuView/>
           </div>
         )}
       </>
