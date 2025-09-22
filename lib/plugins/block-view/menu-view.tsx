@@ -18,11 +18,14 @@ const MenuView = memo(() => {
   const selectedBlockViewSlice = editor.ctx.use(selectedBlockViewCtx)
   const selectedBlockView = selectedBlockViewSlice.get()!;
 
-  if (selectedBlockView.type === 'show') {
-    console.log(selectedBlockView.active.node.type);
-  }
+  // 类型断言：确保 selectedBlockView 是 'show' 类型
+  type SelectedBlockView = Extract<typeof selectedBlockView, { type: 'show' }>;
+  const activeNode = (selectedBlockView as SelectedBlockView).active.node;
+  const { type: nodeType, content: nodeContent } = activeNode;
 
-
+  // 空的段落节点，多发生在新回车增加一个块的操作下发生
+  const isBlankParagraph = nodeType.name === 'paragraph' && nodeContent.size === 0;
+  console.log(1122, isBlankParagraph);
 
   const onClick = ({ key }: Icon) => {
     const editor = get()!;
@@ -74,6 +77,14 @@ const MenuView = memo(() => {
             ))}
           </div>
         </div>
+
+        {isBlankParagraph &&
+          <div>
+            插入表格
+          </div>
+        }
+
+
       </div>
     </div>
   );
