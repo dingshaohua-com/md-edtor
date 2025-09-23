@@ -40,7 +40,10 @@ const { get, loading } = useEditor((root) => {
 })
 ```
 
-这样还是不行，因为milkdown自己提供的表格扩展插件 并没有提供样式，好在crepe已经提供了，样式都放在了`packages\crepe\src\theme\common\table.css`，我于是复制了一份
+这样还是不行，因为milkdown自己提供的表格扩展插件 并没有提供样式，好在crepe已经提供了，你可以安装 crepe包 并`import "@milkdown/crepe/theme/common/table.css";`
+但是我有洁癖不想安装，于是我复制了一份
 ```css
  @import './table-block.css';
 ```
+
+或者考虑使用`@milkdown/theme-nord`,为milkdown提取的（不需要安装 crepe包也能享受到的一些）基础样式！
