@@ -12,6 +12,7 @@ import { commonmark } from '@milkdown/kit/preset/commonmark';
 import { Editor, rootCtx, defaultValueCtx } from '@milkdown/kit/core';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { ProsemirrorAdapterProvider, usePluginViewFactory } from '@prosemirror-adapter/react';
+import { tableBlock } from "@milkdown/kit/component/table-block";
 // import { nord } from '@milkdown/theme-nord';
 
 const mdContent = `
@@ -54,7 +55,8 @@ const MdEditor: React.FC<MdEditorProps> = (props) => {
         ctx.set(defaultValueCtx, mdContent);
       })
       .use(commonmark)
-      .use(gfm);
+      .use(gfm)
+      .use(tableBlock);
     installMarks(editor);
     installPlugins(editor, pluginViewFactory);
     return editor;

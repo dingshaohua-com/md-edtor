@@ -2,13 +2,14 @@ import {
   wrapInHeadingCommand,
   turnIntoTextCommand
 } from '@milkdown/kit/preset/commonmark'
-import { RiAddLine } from '@remixicon/react';
 import { useInstance } from '@milkdown/react';
 import { commandsCtx } from '@milkdown/kit/core'
 import { icons } from "../../utils"
 import type { Icon } from '../../types';
 import { selectedBlockViewCtx } from '../../hooks/use-milkdown-context';
 import { memo } from 'react';
+import { callCommand } from '@milkdown/kit/utils';
+import { insertTableCommand } from '@milkdown/kit/preset/gfm';
 
 const MenuView = memo(() => {
   const [_, get] = useInstance();
@@ -29,6 +30,7 @@ const MenuView = memo(() => {
 
   const onClick = ({ key }: Icon) => {
     const editor = get()!;
+
     // 使用方式
     const commands = editor.ctx.get(commandsCtx)
     if (key === 'h1') {
@@ -40,11 +42,14 @@ const MenuView = memo(() => {
     } else if (key === 'text') {
       commands.call(turnIntoTextCommand.key) // 转换为正文
 
+    } else if (key === 'table') {
+      // 插入默认3x3表格
+      editor.action(callCommand(insertTableCommand.key))
     }
 
   }
   return (
-    <div className="slash-menu-block-view p-2 text-black/80 text-sm w-30 transition-opacity shadow-smooth box-border rounded overflow-hidden bg-white">
+    <div className="slash-menu-block-view p-4 text-black/80 text-sm w-50 transition-opacity shadow-smooth box-border rounded overflow-hidden bg-white">
       <div className="content">
         {/* <fieldset>
           <legend style={{ fontSize: 12 }}>节点专属菜单</legend>
@@ -64,11 +69,10 @@ const MenuView = memo(() => {
         </div> */}
 
         <div className="group">
-          <div className="title border-b border-black/[0.08] mb-2.5 pb-1 flex gap-1 items-center">
-            <RiAddLine />
-            插入
+          <div className="title border-b border-black/[0.08] mb-1 pb-1 flex gap-1 items-center">
+            转换
           </div>
-          <div className="items grid grid-cols-3 gap-1.5">
+          <div className="items grid grid-cols-4 gap-1.5">
             {/* [RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiCodeLine] */}
             {[icons.h1, icons.h2, icons.h3, icons.text].map((item, index) => (
               <div className="item box-border text-xs cursor-pointer border border-black/[0.08] flex items-center justify-center rounded p-1 hover:bg-black/[0.08]" key={index} onClick={() => onClick(item)}>
@@ -78,11 +82,19 @@ const MenuView = memo(() => {
           </div>
         </div>
 
-        {isBlankParagraph &&
-          <div>
-            插入表格
+        <div className="group mt-4">
+          <div className="title border-b border-black/[0.08] mb-1 pb-1 flex gap-1 items-center">
+            插入
           </div>
-        }
+          <div className="items grid grid-cols-4 gap-1.5">
+            {/* [RiH1, RiH2, RiH3, RiTableLine, RiChatQuoteLine, RiSeparator, RiListUnordered, RiListOrdered, RiTodoLine, RiImageLine, RiFunctions, RiCodeLine] */}
+            {[icons.table].map((item, index) => (
+              <div className="item box-border text-xs cursor-pointer border border-black/[0.08] flex items-center justify-center rounded p-1 hover:bg-black/[0.08]" key={index} onClick={() => onClick(item)}>
+                <item.icon size={14} />
+              </div>
+            ))}
+          </div>
+        </div>
 
 
       </div>

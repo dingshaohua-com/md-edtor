@@ -1,40 +1,37 @@
-@import 'tailwindcss';
-@import 'github-markdown-css/github-markdown-light.css';
+ @import 'tailwindcss';
+ @import './public.css';
+ @import 'github-markdown-css/github-markdown-light.css';
+ @import './table-block.css';
 
-@theme {
-  /* 把自定义阴影注册到 theme */
-  --shadow-smooth: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 3px 6px rgba(0, 0, 0, 0.1), 0 12px 20px rgba(0, 0, 0, 0.1);
-}
+ .md-editor {
+   [data-milkdown-root] {
+     height: 100%;
 
-.md-editor {
-  [data-milkdown-root] {
-    height: 100%;
+     .milkdown {
+       height: 100%;
 
-    .milkdown {
-      height: 100%;
+       .editor {
+         height: 100%;
+         outline: none;
+       }
+     }
+   }
 
-      .editor {
-        height: 100%;
-        outline: none;
-      }
-    }
-  }
+   [data-show] {
+     transition: opacity 0.2s ease-in-out;
+   }
 
-  [data-show] {
-    transition: opacity 0.2s ease-in-out;
-  }
+   [data-show='true'] {
+     opacity: 1 !important;
+   }
 
-  [data-show='true'] {
-    opacity: 1 !important;
-  }
+   [data-show='false'] {
+     opacity: 0;
+     z-index: -1 !important;
+   }
 
-  [data-show='false'] {
-    opacity: 0;
-    z-index: -1 !important;
-  }
-
-  .ProseMirror{
-    /* blockquote {
+   .ProseMirror {
+     /* blockquote {
       position: relative;
       padding-left: 40px;
       padding-top: 0;
@@ -112,13 +109,14 @@
         }
       }
     } */
-  }
+   }
 
-  .ProseMirror-selectednode {
-    background: rgba(0, 0, 0, 0.1);
-    &::selection {
-      background: transparent;
-      color: inherit;
-    }
-  }
-}
+   .ProseMirror-selectednode {
+     background: rgba(0, 0, 0, 0.1);
+
+     &::selection {
+       background: transparent;
+       color: inherit;
+     }
+   }
+ }

@@ -1,4 +1,4 @@
-// /* 整个滚动条 */
+/* 整个滚动条 */
 ::-webkit-scrollbar {
     width : 8px;
     height: 8px;
@@ -21,3 +21,10 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
+
+
+
+ @theme {
+   /* 把自定义阴影注册到 theme */
+   --shadow-smooth: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 3px 6px rgba(0, 0, 0, 0.1), 0 12px 20px rgba(0, 0, 0, 0.1);
+ }
