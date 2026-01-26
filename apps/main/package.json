@@ -10,6 +10,10 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@milkdown/kit": "^7.18.0",
+    "@milkdown/react": "^7.18.0",
+    "@milkdown/theme-nord": "^7.18.0",
+    "@remixicon/react": "^4.8.0",
     "@repo/ui-custom": "workspace:*",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"

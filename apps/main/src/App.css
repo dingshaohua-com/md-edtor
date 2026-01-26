@@ -1,1 +1,14 @@
 @import "@repo/config-tailwind";
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* 移除编辑区域聚焦时的外框 */
+.milkdown {
+  .editor {
+    outline: none;
+  }
+}
