@@ -6,6 +6,7 @@ import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import Toolbar from '@/compnents/toolbar';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
+import {highlight, highlightPluginConfig, parser} from '@/utils/code-helight-helper'
 import computeSelectedFmt from '@/utils/compute-selected-fmt';
 
 const mdInitContent = `
@@ -23,6 +24,7 @@ function MilkdownEditor() {
       .config((ctx) => {
         ctx.set(rootCtx, root);
         ctx.set(defaultValueCtx, mdInitContent);
+        ctx.set(highlightPluginConfig.key, { parser });
         ctx.get(listenerCtx).selectionUpdated((ctx) => {
           requestAnimationFrame(() => {
             const result = computeSelectedFmt(ctx);
@@ -33,7 +35,8 @@ function MilkdownEditor() {
       })
       .use(commonmark)
       .use(listener)
-      .use(gfm),
+      .use(gfm)
+      .use(highlight),
   );
 
   return (

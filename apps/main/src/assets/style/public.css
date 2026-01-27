@@ -1,5 +1,4 @@
 @import "@repo/config-tailwind";
-@import "./prosemirror.css";
 @plugin "@tailwindcss/typography";
 
 /* typography主打报纸排版，所以很多风格都不合适现代 */
