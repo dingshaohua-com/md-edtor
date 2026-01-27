@@ -15,6 +15,7 @@
     "@milkdown/plugin-listener": "^7.18.0",
     "@milkdown/react": "^7.18.0",
     "@remixicon/react": "^4.8.0",
+    "@repo/milkdown-plugin": "workspace:*",
     "@repo/ui-custom": "workspace:*",
     "highlight.js": "^11.11.1",
     "lowlight": "^3.3.0",

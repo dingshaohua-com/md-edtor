@@ -1,0 +1,21 @@
+{
+  "name": "@repo/milkdown-plugin",
+  "version": "0.0.0",
+  "license": "ISC",
+  "exports":{
+    "./*":"./*"
+  },
+  "devDependencies": {
+    "@milkdown/kit": "^7.18.0",
+    "@repo/config-ts": "workspace:*",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "peerDependencies": {
+    "@milkdown/kit": "^7.18.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  }
+}
