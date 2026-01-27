@@ -23,6 +23,11 @@ export const bars = [
         id: 'link',
         icon: RiLink,
         tooltip: '链接',
+      },
+      {
+        id:'strike',
+        icon: RiStrikethrough,
+        tooltip: '删除线',
       }
     ],
   },
