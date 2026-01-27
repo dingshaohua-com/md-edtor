@@ -1,0 +1,34 @@
+/* 目录容器基础样式 */
+.js-toc {
+  @apply relative;
+}
+
+/* 所有的链接通用样式 */
+.toc-link {
+  @apply block py-1 no-underline transition-all duration-200 text-gray-500 hover:text-blue-500;
+  font-size: 0.875rem;
+}
+
+/* --- 核心：缩进分层 --- */
+
+/* 二级标题 (H2) - 靠左 */
+.node-name--H2 {
+  @apply font-medium;
+}
+
+/* 三级标题 (H3) - 缩进，且字体变细 */
+.node-name--H3 {
+  @apply pl-4 text-[0.8rem] text-gray-400;
+}
+
+/* --- 状态：当前选中的标题 --- */
+
+/* 当链接被激活时（滚动到对应位置） */
+.is-active-link {
+  @apply text-blue-600 border-blue-600;
+}
+
+/* 隐藏 Tocbot 默认可能生成的列表圆点 */
+.toc-list {
+  @apply list-none p-0 m-0;
+}
