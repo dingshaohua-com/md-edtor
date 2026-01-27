@@ -1,9 +1,12 @@
-import './App.css';
-import { Editor, rootCtx } from '@milkdown/kit/core';
+import '@/assets/style/public.css';
+import { defaultValueCtx, Editor, rootCtx } from '@milkdown/kit/core';
 import { commonmark } from '@milkdown/kit/preset/commonmark';
+import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { nord } from '@milkdown/theme-nord';
 import Toolbar from '@/compnents/toolbar';
+import { useSelectedFmt } from '@/store/useSeletedFmt';
+import computeSelectedFmt from '@/utils/compute-selected-fmt';
 
 function MilkdownEditor() {
   const { get } = useEditor((root) =>
@@ -11,12 +14,17 @@ function MilkdownEditor() {
       .config(nord)
       .config((ctx) => {
         ctx.set(rootCtx, root);
-        // root 其实就是那个挂载的 DOM 节点
-        // if (root instanceof HTMLElement) {
-        //   root.classList.add('m-x-2');
-        // }
+        ctx.set(defaultValueCtx, '在**这里**开始*写*作，`var a = 123` 啊吧[百度](https://baidu.com)吧吧...');
+        ctx.get(listenerCtx).selectionUpdated((ctx) => {
+          const result = computeSelectedFmt(ctx);
+          // 批量更新 Zustand 状态(注意：这里用 getState() 直接调用，不会触发组件渲染，性能极高)
+          console.log(result);
+          
+          useSelectedFmt.getState().setFmts(result);
+        });
       })
-      .use(commonmark),
+      .use(commonmark)
+      .use(listener),
   );
 
   return (

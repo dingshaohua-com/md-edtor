@@ -1,4 +1,5 @@
 @import "@repo/config-tailwind";
+@import "./prosemirror.css";
 html,
 body,
 #root {

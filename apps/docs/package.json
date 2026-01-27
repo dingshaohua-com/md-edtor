@@ -4,7 +4,7 @@
   "scripts": {
     "build": "rspress build",
     "check": "biome check --write",
-    "dev": "rspress dev",
+    "dev": "rspress dev --port 3001",
     "format": "biome format --write",
     "preview": "rspress preview"
   },

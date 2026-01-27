@@ -1,72 +1,17 @@
-# 创建项目
+# 说明
 
-## 创建空项目
-:::tip  注意
-咱并没用[官方提到](https://turborepo.dev/docs/getting-started/installation)的`pnpm dlx create-turbo`来初始化项目，因为和咱们的rsbuild架构不符，不但复杂且带有太多干扰。
-:::
+## 是什么？
+milkdown 是一款 markdown所见即所得(WYSIWYG)编辑器。
 
-使用`pnpm init`初始化空项目react-full-project即可
+它支持 react、vue、solid 等诸多框架，也就是说它与框架无关！
 
-## Monorepo
+同时它还支持任意自定义扩展，来丰富扩展你的markdown能力！
 
-先创建以下文件，来表示此项目为 Monorepo
-```yml title=pnpm-workspace.yaml
-packages:
-  - "apps/*"
-  - "packages/*"
-```
+你可以把它理解为免费且开源版本的 Typecho 编辑器！
 
-接着我们分别再项目中创建这两个目录apps、和packages。apps下初始化两个项目
-```shell
-apps
-  |--main // 用rsbuild创建，修改包名为@repo/main
-  |--docs // 用rspress创建，修改包名为@repo/docs
-```
+点击这里可以查看，[英文官方](https://milkdown.dev)和[中文官网](https://milkdown.nodejs.cn)！
 
-
-## Turborepo
-根项目中安装 turbo，使用Turborepo 来管理 Monorepo
-```
-pnpm add --D turbo
-```
-
-此时我们根项目应是这个
-```json title=package.json
-{
- "name": "react-full-project",
- "version": "0.0.1",
- "packageManager": "pnpm@10.27.0",
- "scripts": {
-  "build": "turbo run build",
-  "dev:main": "turbo run dev --filter=@repo/main",
-  "dev:docs": "turbo run dev --filter=@repo/docs"
- },
- "devDependencies": {
-  "turbo": "^2.7.5"
- }
-}
-```
-
-创建turbo.json
-```json
-{
-  "$schema": "https://turborepo.dev/schema.json",
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-       "outputs": ["../../dist/**", "../../dist/docs/**"]
-    },
-    "dev": {
-      "persistent": true,
-      "cache": false
-    }
-  }
-}
-```
-:::tip  注意
-outputs 之所这样，是因为我们main项目是基于rsbuild，而文档docs是基于rspress。它们构建输出的就是dist目录！
-:::
-
-
-
-
+## 使用场景
+* 你想做一个自己语雀、notion、飞书文档
+* 你项目中需要用的个性化的 md编辑器，而现有无法满足你
+* 你想快速集成 md编辑器到你项目中
