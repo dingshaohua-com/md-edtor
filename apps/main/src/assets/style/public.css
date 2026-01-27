@@ -47,6 +47,12 @@ body,
 .milkdown {
   .editor {
     outline: none;
+    /* 1. 确保有最小高度，不要让内容撑多大就多大 */
+    /* min-height: 300px; */
+    /* 2. 极其重要：给底部留出足够的补白，让用户能点到代码块下方 */
+    padding-bottom: 10px;
+    /* 3. 确保光标不会被切掉 */
+    overflow: visible;
   }
 }
 

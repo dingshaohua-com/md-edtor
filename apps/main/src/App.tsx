@@ -1,5 +1,6 @@
 import '@/assets/style/public.css';
 import { defaultValueCtx, Editor, rootCtx } from '@milkdown/kit/core';
+import { cursor } from '@milkdown/kit/plugin/cursor'
 import { commonmark } from '@milkdown/kit/preset/commonmark';
 import { gfm } from '@milkdown/kit/preset/gfm'
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
@@ -13,6 +14,10 @@ const mdInitContent = `
 ## 你好 
 在**这里**开始*写*作，\`var a = 123\` 
 啊吧[百度](https://baidu.com)吧吧~~这是被划掉的内容~~...
+
+* 呵呵
+* 哈哈
+
 \`\`\` js
 var a = 123; 
 \`\`\`
@@ -34,9 +39,10 @@ function MilkdownEditor() {
         });
       })
       .use(commonmark)
-      .use(listener)
       .use(gfm)
-      .use(highlight),
+      .use(listener)
+      .use(highlight)
+      .use(cursor),
   );
 
   return (
