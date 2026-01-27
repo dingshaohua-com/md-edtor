@@ -4,18 +4,25 @@ import { commonmark } from '@milkdown/kit/preset/commonmark';
 import { gfm } from '@milkdown/kit/preset/gfm'
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
-import { nord } from '@milkdown/theme-nord';
 import Toolbar from '@/compnents/toolbar';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import computeSelectedFmt from '@/utils/compute-selected-fmt';
 
+const mdInitContent = `
+## 你好 
+在**这里**开始*写*作，\`var a = 123\` 
+啊吧[百度](https://baidu.com)吧吧~~这是被划掉的内容~~...
+\`\`\` js
+var a = 123; 
+\`\`\`
+`
+
 function MilkdownEditor() {
   const { get } = useEditor((root) =>
     Editor.make()
-      .config(nord)
       .config((ctx) => {
         ctx.set(rootCtx, root);
-        ctx.set(defaultValueCtx, '在**这里**开始*写*作，`var a = 123` 啊吧[百度](https://baidu.com)吧吧~~这是被划掉的内容~~...');
+        ctx.set(defaultValueCtx, mdInitContent);
         ctx.get(listenerCtx).selectionUpdated((ctx) => {
           requestAnimationFrame(() => {
             const result = computeSelectedFmt(ctx);
@@ -32,7 +39,7 @@ function MilkdownEditor() {
   return (
     <div className="w-full h-full">
       <Toolbar />
-      <div className="p-2">
+      <div className="p-2 prose-custom">
         <Milkdown />
       </div>
     </div>
