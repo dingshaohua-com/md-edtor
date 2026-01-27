@@ -1,40 +1,10 @@
 @import "@repo/config-tailwind";
+@import "./gap-cursor.css";
+@import "./typography-fix.css";
+@import "./table-block.css";
 @plugin "@tailwindcss/typography";
 
-/* typography主打报纸排版，所以很多风格都不合适现代 */
-@layer components {
-  .prose-custom {
-    /* 0. 先把基础的排版骨架“继承”过来 */
-    @apply prose max-w-none;
 
-    /* 1. 基础文字：语雀偏好深灰色而非纯黑 */
-    @apply text-gray-700 leading-7;
-
-    /* 2. 链接：语雀标志性的蓝色 */
-    @apply prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-500;
-
-    /* 3. 行内代码：淡灰色底，无反引号 */
-    @apply prose-code:before:content-none prose-code:after:content-none;
-    /* @apply prose-code:bg-[#f2f2f2] prose-code:text-[#ff4d4f] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-code:mx-1 prose-code:font-normal; */
-
-    /* 4. 引用块：语雀最经典的左侧粗线 */
-    @apply prose-blockquote:border-l-[3px] prose-blockquote:border-[#e8e8e8] prose-blockquote:pl-4 prose-blockquote:text-[#8c8c8c] prose-blockquote:not-italic;
-
-    /* 5. 标题：语雀的标题间距比较紧凑 */
-    @apply prose-h1:text-[28px] prose-h1:font-semibold prose-h1:mt-8 prose-h1:mb-4;
-    @apply prose-h2:text-[24px] prose-h2:font-semibold prose-h2:mt-6 prose-h2:mb-3;
-
-    /* 6. 分割线 */
-    @apply prose-hr:border-[#e8e8e8] prose-hr:my-8;
-
-    /* 仅针对【行内代码】定制样式 (排除在 pre 内部的 code) */
-    :not(pre) > code {
-      @apply bg-slate-100 text-pink-500 rounded px-1.5 py-0.5 mx-0.5;
-      @apply font-mono text-[0.9em] border border-slate-200 font-normal;
-      /* 加上淡淡的边框和缩放，会更有质感 */
-    }
-  }
-}
 
 html,
 body,
@@ -43,32 +13,7 @@ body,
   height: 100%;
 }
 
-/* gap cursor 样式：让代码块前后的间隙光标可见 */
-.ProseMirror-gapcursor {
-  display: none;
-  pointer-events: none;
-  position: relative;
-}
 
-.ProseMirror-gapcursor:after {
-  content: "";
-  display: block;
-  position: absolute;
-  top: -2px;
-  width: 20px;
-  border-top: 1px solid black;
-  animation: ProseMirror-cursor-blink 1.1s steps(2, start) infinite;
-}
-
-@keyframes ProseMirror-cursor-blink {
-  to {
-    visibility: hidden;
-  }
-}
-
-.ProseMirror-focused .ProseMirror-gapcursor {
-  display: block;
-}
 
 /* 移除编辑区域聚焦时的外框 */
 .milkdown {
@@ -82,13 +27,3 @@ body,
     overflow: visible;
   }
 }
-
-/* 
-.prose code::before,
-.prose code::after {
-  content: "";
-}
-.prose :not(pre) > code {
-  @apply bg-slate-100 text-pink-500 rounded px-1.5 py-0.5 mx-0.5;
-  @apply font-mono text-[0.9em] border border-slate-200 font-normal;
-} */

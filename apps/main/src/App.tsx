@@ -1,4 +1,5 @@
 import '@/assets/style/public.css';
+import { tableBlock } from '@milkdown/kit/component/table-block';
 import { defaultValueCtx, Editor, rootCtx } from '@milkdown/kit/core';
 import { cursor } from '@milkdown/kit/plugin/cursor'
 import { codeBlockSchema, commonmark } from '@milkdown/kit/preset/commonmark';
@@ -12,23 +13,30 @@ import {highlight, highlightPluginConfig, parser} from '@/utils/code-helight-hel
 import computeSelectedFmt from '@/utils/compute-selected-fmt';
 
 
-// const mdInitContent = `
-// ## 你好 
-// 在**这里**开始*写*作，\`var a = 123\` 
-// 啊吧[百度](https://baidu.com)吧吧~~这是被划掉的内容~~...
+const mdInitContent = `
+## 你好 
+在**这里**开始*写*作，\`var a = 123\` 
+啊吧[百度](https://baidu.com)吧吧~~这是被划掉的内容~~...
 
-// ---
+---
 
-// * 呵呵
-// * 哈哈
+* 呵呵
+* 哈哈
 
-// [![pZwLWOf.png](https://s41.ax1x.com/2026/01/09/pZwLWOf.png)](https://imgchr.com/i/pZwLWOf)
 
-// \`\`\` js
-// var a = 123; 
-// \`\`\`
-// `
-const mdInitContent = `---`
+\`\`\` js
+var a = 123; 
+\`\`\`
+
+> 动物
+
+列1   | 列2 | 列3 
+----- | --- | ---- 
+第1行 | 12  | 13  
+第2行 | 22  | 23  
+第3行 | 32  | 33  
+`
+// const mdInitContent = `---`
 // const mdInitContent = `[![pZwLWOf.png](https://s41.ax1x.com/2026/01/09/pZwLWOf.png)](https://imgchr.com/i/pZwLWOf)`
 
 
@@ -56,6 +64,7 @@ function MilkdownEditor() {
       .use(listener)
       .use(highlight)
       .use(cursor)
+      .use(tableBlock)
       .use(trailingParagraph),
   );
 
