@@ -2,7 +2,7 @@ import '@/assets/style/public.css';
 import { tableBlock } from '@milkdown/kit/component/table-block';
 import { defaultValueCtx, Editor, editorViewOptionsCtx, rootCtx } from '@milkdown/kit/core';
 import { cursor } from '@milkdown/kit/plugin/cursor';
-import { codeBlockSchema, commonmark } from '@milkdown/kit/preset/commonmark';
+import { codeBlockSchema, commonmark, headingIdGenerator } from '@milkdown/kit/preset/commonmark';
 import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
@@ -31,6 +31,14 @@ function MilkdownEditor() {
           });
         });
         ctx.set(editorViewOptionsCtx, { editable: () => false });
+        // 自定义 heading id 生成器，去掉 . 等 CSS 特殊字符，避免 tocbot 转义后 getElementById 找不到
+        // ctx.set(headingIdGenerator.key, (node) => {
+        //   return node.textContent
+        //     ?.toLowerCase()
+        //     .trim()
+        //     .replace(/\s+/g, '-')
+        //     .replace(/[^\w-]+/g, '') || '';
+        // });
       })
       .use(commonmark)
       .use(

@@ -12,8 +12,8 @@ export default function useTocbot() {
         scrollSmooth: false, // 顺滑滚动
         headingsOffset: 10, // 修正点击跳转后标题被顶栏挡住的问题
         hasInnerContainers: true, // 如果标题在嵌套容器里，开启此项
-        scrollContainer: '.prose-custom'  // 默认是 window
-        // decodeEntities: true,
+        scrollContainer: '.prose-custom',  // 默认是 window
+        enableUrlHashUpdateOnScroll: true,
       });
     });
 

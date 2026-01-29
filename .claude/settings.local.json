@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm patch:*)",
+      "Bash(pnpm patch-commit:*)",
+      "Bash(pnpm install:*)"
+    ]
+  }
+}
