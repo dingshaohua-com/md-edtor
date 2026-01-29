@@ -17,3 +17,5 @@ dist/
 
 # frame
 .turbo
+
+!packages/**/dist/

@@ -1,5 +1,5 @@
+import tocbot from '@repo/tocbot';
 import { useEffect } from 'react';
-import tocbot from 'tocbot';
 
 export default function useTocbot() {
   useEffect(() => {
