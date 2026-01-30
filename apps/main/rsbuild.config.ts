@@ -8,12 +8,15 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
-    pluginReact(),
+    pluginReact({
+      
+    }),
     pluginBabel({
       include: /\.(?:jsx|tsx)$/,
       babelLoaderOptions(opts) {
         opts.plugins?.unshift('babel-plugin-react-compiler');
       },
     }),
+    
   ],
 });

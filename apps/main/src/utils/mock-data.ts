@@ -23,7 +23,7 @@
 // `;
 // const mdInitContent = `---`
 // const mdInitContent = `[![pZwLWOf.png](https://s41.ax1x.com/2026/01/09/pZwLWOf.png)](https://imgchr.com/i/pZwLWOf)`
-export const mdInitContent1 = `
+export const mdInitContent = `
 # 🌐 全球化远程团队高效管理手册
 
 在 2026 年的今天，远程办公已不再是应急之举，而是一种主流的生产力形态。本手册旨在通过标准化流程，解决跨时区协作中的沟通损耗与信任构建问题。
@@ -125,7 +125,7 @@ export const mdInitContent1 = `
 `;
 
 
-export const mdInitContent = `
+export const mdInitContent2 = `
 # Global Research Report on Renewable Energy Integration
 
 ## Preface and Industry Context

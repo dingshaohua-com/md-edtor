@@ -1,0 +1,19 @@
+{
+  "name": "@repo/neotoc",
+  "version": "1.0.1",
+  "description": "超平滑目录界面生成器，适用于你的文档和博客",
+  "main": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./src/index.ts",
+        "default": "./src/index.ts"
+      }
+    },
+    "./base-plain.css": "./src/styles/base-plain.css",
+    "./base-modern.css": "./src/styles/base-modern.css",
+    "./colors-monochrome.css": "./src/styles/colors-monochrome.css",
+    "./colors-zinc.css": "./src/styles/colors-zinc.css",
+    "./colors-slate.css": "./src/styles/colors-slate.css"
+  }
+}

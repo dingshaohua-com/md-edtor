@@ -63,18 +63,24 @@ importers:
       '@repo/milkdown-plugin':
         specifier: workspace:*
         version: link:../../packages/milkdown-plugin
+      '@repo/neotoc':
+        specifier: workspace:*
+        version: link:../../packages/neotoc
       '@repo/ui-custom':
         specifier: workspace:*
         version: link:../../packages/ui-custom
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
+      lodash-es:
+        specifier: ^4.17.23
+        version: 4.17.23
       lowlight:
         specifier: ^3.3.0
         version: 3.3.0
-      neotoc:
-        specifier: ^1.0.1
-        version: 1.0.1
       react:
         specifier: ^19.2.4
         version: 19.2.4
@@ -148,7 +154,7 @@ importers:
     devDependencies:
       '@milkdown/kit':
         specifier: ^7.18.0
-        version: 7.18.0(@codemirror/language@6.12.1)(@codemirror/state@6.5.4)(@codemirror/view@6.39.11)
+        version: 7.18.0(@codemirror/language@6.12.1)(@codemirror/state@6.5.4)(@codemirror/view@6.39.11)(typescript@5.9.3)
       '@repo/config-ts':
         specifier: workspace:*
         version: link:../config-ts
@@ -164,6 +170,8 @@ importers:
       react-dom:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
+
+  packages/neotoc: {}
 
   packages/ui-custom:
     dependencies:
@@ -1845,9 +1853,6 @@ packages:
     engines: {node: ^18 || >=20}
     hasBin: true
 
-  neotoc@1.0.1:
-    resolution: {integrity: sha512-s+p8gaPzIPbbawoVOjZx1cFZjD/HlMuVWCwdg/WmHh0/AwXM5vvulS+14vBVmLcGLWJy4ZOzDVjxJVJMIFIvyg==}
-
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
 
@@ -3042,32 +3047,6 @@ snapshots:
       '@types/react': 19.2.9
       react: 19.2.3
 
-  '@milkdown/components@7.18.0(@codemirror/language@6.12.1)(@codemirror/state@6.5.4)(@codemirror/view@6.39.11)':
-    dependencies:
-      '@codemirror/language': 6.12.1
-      '@codemirror/state': 6.5.4
-      '@codemirror/view': 6.39.11
-      '@floating-ui/dom': 1.7.4
-      '@milkdown/core': 7.18.0
-      '@milkdown/ctx': 7.18.0
-      '@milkdown/exception': 7.18.0
-      '@milkdown/plugin-tooltip': 7.18.0
-      '@milkdown/preset-commonmark': 7.18.0
-      '@milkdown/preset-gfm': 7.18.0
-      '@milkdown/prose': 7.18.0
-      '@milkdown/transformer': 7.18.0
-      '@milkdown/utils': 7.18.0
-      '@types/lodash-es': 4.17.12
-      clsx: 2.1.1
-      dompurify: 3.3.1
-      lodash-es: 4.17.23
-      nanoid: 5.1.6
-      unist-util-visit: 5.1.0
-      vue: 3.5.27
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
   '@milkdown/components@7.18.0(@codemirror/language@6.12.1)(@codemirror/state@6.5.4)(@codemirror/view@6.39.11)(typescript@5.9.3)':
     dependencies:
       '@codemirror/language': 6.12.1
@@ -3136,33 +3115,6 @@ snapshots:
       '@milkdown/exception': 7.18.0
 
   '@milkdown/exception@7.18.0': {}
-
-  '@milkdown/kit@7.18.0(@codemirror/language@6.12.1)(@codemirror/state@6.5.4)(@codemirror/view@6.39.11)':
-    dependencies:
-      '@milkdown/components': 7.18.0(@codemirror/language@6.12.1)(@codemirror/state@6.5.4)(@codemirror/view@6.39.11)
-      '@milkdown/core': 7.18.0
-      '@milkdown/ctx': 7.18.0
-      '@milkdown/plugin-block': 7.18.0
-      '@milkdown/plugin-clipboard': 7.18.0
-      '@milkdown/plugin-cursor': 7.18.0
-      '@milkdown/plugin-history': 7.18.0
-      '@milkdown/plugin-indent': 7.18.0
-      '@milkdown/plugin-listener': 7.18.0
-      '@milkdown/plugin-slash': 7.18.0
-      '@milkdown/plugin-tooltip': 7.18.0
-      '@milkdown/plugin-trailing': 7.18.0
-      '@milkdown/plugin-upload': 7.18.0
-      '@milkdown/preset-commonmark': 7.18.0
-      '@milkdown/preset-gfm': 7.18.0
-      '@milkdown/prose': 7.18.0
-      '@milkdown/transformer': 7.18.0
-      '@milkdown/utils': 7.18.0
-    transitivePeerDependencies:
-      - '@codemirror/language'
-      - '@codemirror/state'
-      - '@codemirror/view'
-      - supports-color
-      - typescript
 
   '@milkdown/kit@7.18.0(@codemirror/language@6.12.1)(@codemirror/state@6.5.4)(@codemirror/view@6.39.11)(typescript@5.9.3)':
     dependencies:
@@ -3925,12 +3877,6 @@ snapshots:
       '@vue/compiler-ssr': 3.5.27
       '@vue/shared': 3.5.27
       vue: 3.5.27(typescript@5.9.3)
-
-  '@vue/server-renderer@3.5.27(vue@3.5.27)':
-    dependencies:
-      '@vue/compiler-ssr': 3.5.27
-      '@vue/shared': 3.5.27
-      vue: 3.5.27
 
   '@vue/shared@3.5.27': {}
 
@@ -4885,8 +4831,6 @@ snapshots:
 
   nanoid@5.1.6: {}
 
-  neotoc@1.0.1: {}
-
   node-releases@2.0.27: {}
 
   normalize-path@3.0.0: {}
@@ -5407,14 +5351,6 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
-
-  vue@3.5.27:
-    dependencies:
-      '@vue/compiler-dom': 3.5.27
-      '@vue/compiler-sfc': 3.5.27
-      '@vue/runtime-dom': 3.5.27
-      '@vue/server-renderer': 3.5.27(vue@3.5.27)
-      '@vue/shared': 3.5.27
 
   vue@3.5.27(typescript@5.9.3):
     dependencies:

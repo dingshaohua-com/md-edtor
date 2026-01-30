@@ -7,17 +7,19 @@ import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Toolbar from '@/compnents/toolbar';
-import useTocBot from '@/hook/use-tocbot';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { highlight, highlightPluginConfig, parser } from '@/utils/code-helight-helper';
 import computeSelectedFmt from '@/utils/compute-selected-fmt';
 import { mdInitContent } from './utils/mock-data';
 
+import neotoc from './utils/neotoc-helper';
+
 function MilkdownEditor() {
-  const tocRef = useRef<HTMLElement>(null)
-  const { tocbot } = useTocBot(tocRef);
+  const tocRef = useRef<HTMLElement>(null);
+  const milkdownRef = useRef<HTMLElement>(null);
+  // useTocMenu(tocRef);
   const { get } = useEditor((root) =>
     Editor.make()
       .config((ctx) => {
@@ -32,15 +34,16 @@ function MilkdownEditor() {
             // tocbot.refresh()
           });
         });
-        ctx.set(editorViewOptionsCtx, { editable: () => false });
-        // 自定义 heading id 生成器，去掉 . 等 CSS 特殊字符，避免 tocbot 转义后 getElementById 找不到
-        // ctx.set(headingIdGenerator.key, (node) => {
-        //   return node.textContent
-        //     ?.toLowerCase()
-        //     .trim()
-        //     .replace(/\s+/g, '-')
-        //     .replace(/[^\w-]+/g, '') || '';
-        // });
+        ctx.get(listenerCtx).mounted((ctx) => {
+          neotoc.init(tocRef.current!);
+        });
+
+        ctx.get(listenerCtx).updated((ctx, doc, prevDoc) => {
+          // tocInstance.refresh();
+          console.log('文档已更新，目录同步中...');
+          neotoc.update()
+        });
+        // ctx.set(editorViewOptionsCtx, { editable: () => false });
       })
       .use(commonmark)
       .use(
@@ -61,15 +64,10 @@ function MilkdownEditor() {
     <div className="milkdown-editor w-full h-full flex flex-col">
       <Toolbar />
       <div className="prose-custom flex-1 min-h-0 border-amber-200 border-2 flex overflow-auto justify-center relative scroll-smooth">
-        <main className="flex-1 min-h-0 max-w-220">
+        <main className="flex-1 min-h-0 max-w-220" ref={milkdownRef}>
           <Milkdown />
         </main>
-        <aside className="text-sm w-60 sticky top-10 h-fit ml-12" ref={tocRef}>
-          {/* <div className="border-l border-gray-200 pl-4">
-            <div className="text-sm font-bold uppercase tracking-wider mb-4 text-gray-500">目录</div>
-            <div className="js-toc" ref={tocRef}>我是目录，我不动了</div>
-          </div> */}
-        </aside>
+        <aside className="text-sm w-60 sticky top-10 h-fit ml-12" ref={tocRef} />
       </div>
     </div>
   );
@@ -77,9 +75,9 @@ function MilkdownEditor() {
 
 function MilkdownEditorWrapper() {
   return (
-     <MilkdownProvider>
-        <MilkdownEditor />
-      </MilkdownProvider>
+    <MilkdownProvider>
+      <MilkdownEditor />
+    </MilkdownProvider>
   );
 }
 
