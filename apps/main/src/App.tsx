@@ -7,6 +7,7 @@ import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
+import { useRef } from 'react';
 import Toolbar from '@/compnents/toolbar';
 import useTocBot from '@/hook/use-tocbot';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
@@ -15,7 +16,8 @@ import computeSelectedFmt from '@/utils/compute-selected-fmt';
 import { mdInitContent } from './utils/mock-data';
 
 function MilkdownEditor() {
-  const { tocbot } = useTocBot();
+  const tocRef = useRef<HTMLElement>(null)
+  const { tocbot } = useTocBot(tocRef);
   const { get } = useEditor((root) =>
     Editor.make()
       .config((ctx) => {
@@ -62,11 +64,11 @@ function MilkdownEditor() {
         <main className="flex-1 min-h-0 max-w-220">
           <Milkdown />
         </main>
-        <aside className="text-sm w-60 sticky top-10 h-fit ml-12">
-          <div className="border-l border-gray-200 pl-4">
+        <aside className="text-sm w-60 sticky top-10 h-fit ml-12" ref={tocRef}>
+          {/* <div className="border-l border-gray-200 pl-4">
             <div className="text-sm font-bold uppercase tracking-wider mb-4 text-gray-500">目录</div>
-            <div className="js-toc">我是目录，我不动了</div>
-          </div>
+            <div className="js-toc" ref={tocRef}>我是目录，我不动了</div>
+          </div> */}
         </aside>
       </div>
     </div>

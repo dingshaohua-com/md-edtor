@@ -16,10 +16,10 @@
     "@milkdown/react": "^7.18.0",
     "@remixicon/react": "^4.8.0",
     "@repo/milkdown-plugin": "workspace:*",
-    "@repo/tocbot": "workspace:*",
     "@repo/ui-custom": "workspace:*",
     "highlight.js": "^11.11.1",
     "lowlight": "^3.3.0",
+    "neotoc": "^1.0.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "zustand": "^5.0.10"

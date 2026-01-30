@@ -1,25 +1,29 @@
-import tocbot from '@repo/tocbot';
-import { useEffect } from 'react';
+import neotoc from 'neotoc';
+import { type RefObject, useEffect } from 'react';
 
-export default function useTocbot() {
+// 记得引入新文档提到的基础样式和配色
+// import "neotoc/dist/base-modern.css";
+// import "neotoc/dist/colors-zinc.css"; // 既然你用 Tailwind，Zinc 可能最搭
+
+export default function tocMenu(tocRef: (RefObject<HTMLElement|null>)) {
   useEffect(() => {
-    // 初始化 Tocbot
-    requestAnimationFrame(() => {
-      tocbot.init({
-        tocSelector: '.js-toc', // 导航渲染位置
-        contentSelector: '.prose-custom', // 标题提取来源 (你的 Milkdown 容器类名)
-        headingSelector: 'h2, h3, h4', // 提取二级和三级标题
-        scrollSmooth: false, // 顺滑滚动
-        headingsOffset: 10, // 修正点击跳转后标题被顶栏挡住的问题
-        hasInnerContainers: true, // 如果标题在嵌套容器里，开启此项
-        scrollContainer: '.prose-custom',  // 默认是 window
-        enableUrlHashUpdateOnScroll: true,
+    let cleanup: any;
+    if (tocRef?.current) {
+      // 调用 neotoc 并传入参数
+      cleanup = neotoc({
+        // 1. io: 这里的 .milkdown 对应编辑器的容器类名
+        // 2. h2,h3,h4: 你想抓取的标题等级
+        // 3. tocRef.current: 直接传 DOM 节点（对应文档中提到的 to 选项）
+        io: '.prose-custom >> h2,h3,h4',
+        to: tocRef.current,
+        title: '目录',
+        initialFoldLevel: 3, // 默认折叠级别
+        offsetTop: 80, // 如果你有固定 Header，记得设置这个
+        ellipsis: true, // 标题过长自动省略
       });
-    });
+    }
 
-    return () => tocbot.destroy(); // 组件卸载记得销毁
-  }, []);
-  return {
-    tocbot,
-  };
+    // 直接返回 cleanup 函数，React 卸载时会自动执行销毁逻辑
+    return cleanup;
+  }, [tocRef]);
 }
