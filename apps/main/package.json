@@ -17,6 +17,7 @@
     "@remixicon/react": "^4.9.0",
     "@repo/milkdown-plugin": "workspace:*",
     "@repo/neotoc": "workspace:*",
+    "@repo/toc-menu": "workspace:*",
     "@repo/ui-custom": "workspace:*",
     "@types/lodash-es": "^4.17.12",
     "highlight.js": "^11.11.1",

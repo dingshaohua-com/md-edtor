@@ -1,24 +1,9 @@
-import {
-  type AutoScrollState,
-  animateBicycleScrollingIfNeeded,
-  animateMotorcycleScrollingIfNeeded,
-  initMotorcycleScrolling,
-  prepareForBicycleScrolling,
-} from './autoScroll.js';
+import { type AutoScrollState, animateBicycleScrollingIfNeeded, animateMotorcycleScrollingIfNeeded, initMotorcycleScrolling, prepareForBicycleScrolling } from './autoScroll.js';
 
-import type {
-  FoldState,
-  FoldStates,
-  FoldStatus,
-} from './fold-types.js';
+import type { FoldState, FoldStates, FoldStatus } from './fold-types.js';
 import { addHighlight } from './highlight.js';
 import { getRelativePadding, indentWidth } from './indents.js';
-import {
-  calculateYBasedOnFolding,
-  findScrollContainer,
-  getAncestors,
-  getViewportYSize,
-} from './utils.js';
+import { calculateYBasedOnFolding, findScrollContainer, getAncestors, getViewportYSize } from './utils.js';
 
 interface Options {
   io: string;
@@ -33,26 +18,17 @@ interface Options {
   autoScrollOffset?: number;
 }
 
-export default function neotoc({
-  io,
-  to,
-  title = 'On this page',
-  fillAnchor = (h) => h.textContent!,
-  ellipsis = false,
-  classPrefix = 'nt-',
-  initialFoldLevel = 6,
-  offsetTop = 0,
-  offsetBottom = 0,
-  autoScrollOffset = 50,
-}: Options) {
+export default function neotoc({ io, to, title = 'On this page', fillAnchor = (h) => h.textContent!, ellipsis = false, classPrefix = 'nt-', initialFoldLevel = 6, offsetTop = 0, offsetBottom = 0, autoScrollOffset = 50 }: Options) {
   // https://icon-sets.iconify.design/charm/chevron-down/
   const toggleFoldIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 5.75L8 10.25l4.25-4.5"/></svg>';
   // https://icon-sets.iconify.design/lucide/dot/
   const unfoldableIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><circle cx="12.1" cy="12.1" r="1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.65"/></svg>';
   // https://icon-sets.iconify.design/material-symbols/unfold-less-rounded/
-  const foldAllIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m12 16.9l-2.4 2.4q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l3.1-3.1q.15-.15.325-.212t.375-.063t.375.063t.325.212l3.1 3.1q.275.275.275.7t-.275.7t-.7.275t-.7-.275zm0-9.8l2.4-2.4q.275-.275.7-.275t.7.275t.275.7t-.275.7l-3.1 3.1q-.15.15-.325.213T12 9.475t-.375-.062T11.3 9.2L8.2 6.1q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275z"/></svg>';
+  const foldAllIcon =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m12 16.9l-2.4 2.4q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l3.1-3.1q.15-.15.325-.212t.375-.063t.375.063t.325.212l3.1 3.1q.275.275.275.7t-.275.7t-.7.275t-.7-.275zm0-9.8l2.4-2.4q.275-.275.7-.275t.7.275t.275.7t-.275.7l-3.1 3.1q-.15.15-.325.213T12 9.475t-.375-.062T11.3 9.2L8.2 6.1q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275z"/></svg>';
   // https://icon-sets.iconify.design/material-symbols/unfold-more-rounded/
-  const unfoldAllIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m12 18.1l2.325-2.325q.3-.3.725-.3t.725.3t.3.725t-.3.725L12.7 20.3q-.15.15-.325.213t-.375.062t-.375-.062t-.325-.213l-3.075-3.075q-.3-.3-.3-.725t.3-.725t.725-.3t.725.3zM12 6L9.675 8.325q-.3.3-.725.3t-.725-.3t-.3-.725t.3-.725L11.3 3.8q.15-.15.325-.213T12 3.526t.375.063t.325.212l3.075 3.075q.3.3.3.725t-.3.725t-.725.3t-.725-.3z"/></svg>';
+  const unfoldAllIcon =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m12 18.1l2.325-2.325q.3-.3.725-.3t.725.3t.3.725t-.3.725L12.7 20.3q-.15.15-.325.213t-.375.062t-.375-.062t-.325-.213l-3.075-3.075q-.3-.3-.3-.725t.3-.725t.725-.3t.725.3zM12 6L9.675 8.325q-.3.3-.725.3t-.725-.3t-.3-.725t.3-.725L11.3 3.8q.15-.15.325-.213T12 3.526t.375.063t.325.212l3.075 3.075q.3.3.3.725t-.3.725t-.725.3t-.725-.3z"/></svg>';
 
   function elt<T extends HTMLElement>(type: string, className?: string): T {
     const e = document.createElement(type) as T;
@@ -90,25 +66,16 @@ export default function neotoc({
     maxHLevel: number = 0;
 
   // caches below:
-  const idToAnchorMap: { [x: string]: HTMLAnchorElement } = {};
+  let idToAnchorMap: { [x: string]: HTMLAnchorElement } = {};
 
-  const anchorToAncestorFoldableDivsMap = new Map<
-    HTMLAnchorElement,
-    HTMLDivElement[]
-  >();
+  const anchorToAncestorFoldableDivsMap = new Map<HTMLAnchorElement, HTMLDivElement[]>();
 
-  const [selectorPart1, selectorPart2, selectorPart3] = io
-    .split('>>')
-    .map((s) => s.trim());
+  const [selectorPart1, selectorPart2, selectorPart3] = io.split('>>').map((s) => s.trim());
 
-  const headings = document.querySelectorAll<HTMLHeadingElement>(
-    `${selectorPart1} :is(${selectorPart2})`,
-  );
+  let headings = document.querySelectorAll<HTMLHeadingElement>(`${selectorPart1} :is(${selectorPart2})`);
   const firstHeadingLevel = headings.length > 0 ? +headings[0].tagName[1] : 0;
 
-  function genToc(
-    headings: HTMLHeadingElement[] | NodeListOf<HTMLHeadingElement>,
-  ): HTMLUListElement | undefined {
+  function genToc(headings: HTMLHeadingElement[] | NodeListOf<HTMLHeadingElement>): HTMLUListElement | undefined {
     if (!headings.length) return;
 
     const ul = elt<HTMLUListElement>('ul');
@@ -188,12 +155,8 @@ export default function neotoc({
           level: curHeadingLevel,
           toggleFold() {
             curFoldState.isFolded = !curFoldState.isFolded;
-            toggleFoldButton.ariaPressed = curFoldState.isFolded
-              ? 'true'
-              : 'false';
-            toggleFoldButton.ariaExpanded = curFoldState.isFolded
-              ? 'false'
-              : 'true';
+            toggleFoldButton.ariaPressed = curFoldState.isFolded ? 'true' : 'false';
+            toggleFoldButton.ariaExpanded = curFoldState.isFolded ? 'false' : 'true';
 
             toggleClass(foldableDiv, 'foldable-folded');
             toggleClass(toggleFoldButton, toggleFoldButtonFoldedClass);
@@ -309,11 +272,9 @@ export default function neotoc({
 
   const toc = genToc(headings);
 
-  if (!toc) return () => { };
+  if (!toc) return () => {};
 
-  const appendTarget = selectorPart3
-    ? document.querySelector(selectorPart3)
-    : to;
+  const appendTarget = selectorPart3 ? document.querySelector(selectorPart3) : to;
   if (!appendTarget) throw new Error('Nothing was found to append Neotoc to!');
 
   const widget = elt('div', 'widget');
@@ -333,10 +294,7 @@ export default function neotoc({
   foldAllBtn.innerHTML = foldAllIcon;
   unfoldAllBtn.innerHTML = unfoldAllIcon;
 
-  const foldBtnNames = [
-    'Fold all',
-    'Unfold all',
-  ];
+  const foldBtnNames = ['Fold all', 'Unfold all'];
 
   foldAllBtn.ariaLabel = foldBtnNames[0];
   foldAllBtn.title = foldBtnNames[0];
@@ -358,9 +316,7 @@ export default function neotoc({
   widget.append(tocBody);
   appendTarget.append(widget);
 
-  const tocBodyTotalBlockPadding =
-    +getComputedStyle(tocBody).paddingTop.slice(0, -2) +
-    +getComputedStyle(tocBody).paddingBottom.slice(0, -2);
+  const tocBodyTotalBlockPadding = +getComputedStyle(tocBody).paddingTop.slice(0, -2) + +getComputedStyle(tocBody).paddingBottom.slice(0, -2);
 
   function updateTopBottomGradientPositions() {
     const scrollTop = tocBody.scrollTop;
@@ -411,16 +367,13 @@ export default function neotoc({
   let bottomInUnfoldedState: null | number = null;
 
   const runConditionally = (cb: () => void) => {
-    const condition1 =
-      topInUnfoldedState !== lastTopInUnfoldedState ||
-      bottomInUnfoldedState !== lastBottomInUnfoldedState;
+    const condition1 = topInUnfoldedState !== lastTopInUnfoldedState || bottomInUnfoldedState !== lastBottomInUnfoldedState;
 
     // This check is necessary because sometimes in especially firefox,
     // even if there is no scroll in the `scrollContainer`, only scroll in
     // the `tocBody` causes update to `topInUnfoldedState` and/or it's
     // related variables.
-    const condition2 =
-      scrollContainerScrollTop !== lastScrollContainerScrollTop;
+    const condition2 = scrollContainerScrollTop !== lastScrollContainerScrollTop;
 
     const condition3 = viewportHeight !== lastViewportHeight;
 
@@ -430,6 +383,11 @@ export default function neotoc({
   };
 
   const renderFrame = (curTimestamp: number) => {
+    if (headings.length === 0) return; // 没有标题不计算
+
+    // 检查第一个标题是否有高度，如果没有，说明 DOM 还没准备好，跳过这一帧
+    if (headings[0].getBoundingClientRect().height === 0) return;
+
     const [viewportTop, viewportBottom] = getViewportYSize(
       scrollContainer,
       offsetTop + 1, // When scrolling to a heading chrome sometimes makes a fractional positive/negative displacement. Adding 1 makes sure that viewport top edge is always below the top edge of the heading by a fractional amount or by 1px.
@@ -446,17 +404,14 @@ export default function neotoc({
       const nextH = headings[i + 1];
 
       const sectionTop = curH.getBoundingClientRect().top;
-      const sectionBottom = nextH
-        ? nextH.getBoundingClientRect().top
-        : contentHolder.getBoundingClientRect().bottom;
+      const sectionBottom = nextH ? nextH.getBoundingClientRect().top : contentHolder.getBoundingClientRect().bottom;
 
       const sectionHeight = sectionBottom - sectionTop;
 
       if (viewportTop !== null) {
         if (sectionTop < viewportTop) {
           if (sectionBottom > viewportTop) {
-            const intersectionHeight =
-              Math.min(sectionBottom, viewportBottom!) - viewportTop;
+            const intersectionHeight = Math.min(sectionBottom, viewportBottom!) - viewportTop;
             const intersectionRatio = intersectionHeight / sectionHeight;
             if (!intersectionRatioOfFirstSection) {
               intersectionRatioOfFirstSection = intersectionRatio;
@@ -464,12 +419,10 @@ export default function neotoc({
               intersectionRatioOfLastSection = intersectionRatio;
             }
             anchorsToSectionsInView.push(idToAnchorMap[curH.id]);
-            if (topOffsetRatio === null)
-              topOffsetRatio = (viewportTop - sectionTop) / sectionHeight;
+            if (topOffsetRatio === null) topOffsetRatio = (viewportTop - sectionTop) / sectionHeight;
           }
         } else if (sectionTop < viewportBottom!) {
-          const intersectionHeight =
-            Math.min(sectionBottom, viewportBottom!) - sectionTop;
+          const intersectionHeight = Math.min(sectionBottom, viewportBottom!) - sectionTop;
           const intersectionRatio = intersectionHeight / sectionHeight;
           if (!intersectionRatioOfFirstSection) {
             intersectionRatioOfFirstSection = intersectionRatio;
@@ -491,8 +444,7 @@ export default function neotoc({
       const y1Max = rect1.top + rect1.height * topOffsetRatio!;
       let y2Max = y1Max + rect1.height * intersectionRatioOfFirstSection!;
 
-      const ancestorFoldableDivsForA1 =
-        anchorToAncestorFoldableDivsMap.get(a1)!;
+      const ancestorFoldableDivsForA1 = anchorToAncestorFoldableDivsMap.get(a1)!;
 
       // Vertical coordinates of highlighted area when toc may be folded somehow
       const y1Min = calculateYBasedOnFolding(ancestorFoldableDivsForA1, y1Max);
@@ -506,18 +458,14 @@ export default function neotoc({
 
         y2Max = rect2.top + rect2.height * intersectionRatioOfLastSection!;
 
-        y2Min = calculateYBasedOnFolding(
-          anchorToAncestorFoldableDivsMap.get(a2)!,
-          y2Max,
-        );
+        y2Min = calculateYBasedOnFolding(anchorToAncestorFoldableDivsMap.get(a2)!, y2Max);
       }
 
       const tocBodyTop = tocBody.getBoundingClientRect().top;
       const scrolledY = tocBody.scrollTop;
       const borderTopWidth = tocBody.clientTop;
 
-      viewportHeight =
-        viewportTop === null ? null : viewportBottom! - viewportTop;
+      viewportHeight = viewportTop === null ? null : viewportBottom! - viewportTop;
 
       const top = y1Min + scrolledY - tocBodyTop - borderTopWidth;
       const bottom = y2Min + scrolledY - tocBodyTop - borderTopWidth;
@@ -528,43 +476,16 @@ export default function neotoc({
 
       // See it's definition to be clear about its purpose
       runConditionally(() => {
-        const scrollDiff =
-          scrollContainerScrollTop! -
-          (lastScrollContainerScrollTop || scrollContainerScrollTop!);
-        const scrollDir =
-          scrollDiff > 0 ? 'down' : scrollDiff < 0 ? 'up' : 'down';
+        const scrollDiff = scrollContainerScrollTop! - (lastScrollContainerScrollTop || scrollContainerScrollTop!);
+        const scrollDir = scrollDiff > 0 ? 'down' : scrollDiff < 0 ? 'up' : 'down';
 
-        animateBicycleScrollingIfNeeded(
-          tocBody,
-          top,
-          bottom,
-          autoScrollOffset,
-          autoScrollState,
-        );
-        initMotorcycleScrolling(
-          scrollDir,
-          tocBody,
-          top,
-          bottom,
-          autoScrollOffset,
-          curTimestamp,
-          autoScrollState,
-        );
+        animateBicycleScrollingIfNeeded(tocBody, top, bottom, autoScrollOffset, autoScrollState);
+        initMotorcycleScrolling(scrollDir, tocBody, top, bottom, autoScrollOffset, curTimestamp, autoScrollState);
       });
 
-      prepareForBicycleScrolling(
-        tocBody,
-        top,
-        bottom,
-        autoScrollOffset,
-        autoScrollState,
-      );
+      prepareForBicycleScrolling(tocBody, top, bottom, autoScrollOffset, autoScrollState);
 
-      animateMotorcycleScrollingIfNeeded(
-        tocBody,
-        curTimestamp,
-        autoScrollState,
-      );
+      animateMotorcycleScrollingIfNeeded(tocBody, curTimestamp, autoScrollState);
 
       draw({
         height: y2Min - y1Min,
@@ -585,20 +506,12 @@ export default function neotoc({
       lastTopInUnfoldedState = topInUnfoldedState;
       lastBottomInUnfoldedState = bottomInUnfoldedState;
     } else {
-      viewportHeight =
-        scrollContainerScrollTop =
-        topInUnfoldedState =
-        bottomInUnfoldedState =
-        null;
+      viewportHeight = scrollContainerScrollTop = topInUnfoldedState = bottomInUnfoldedState = null;
 
       draw({ isVisible: false, time: curTimestamp });
       updateTopBottomGradientPositions();
 
-      lastViewportHeight =
-        lastScrollContainerScrollTop =
-        lastTopInUnfoldedState =
-        lastBottomInUnfoldedState =
-        null;
+      lastViewportHeight = lastScrollContainerScrollTop = lastTopInUnfoldedState = lastBottomInUnfoldedState = null;
     }
 
     if (foldScrollState.on) {
@@ -644,8 +557,48 @@ export default function neotoc({
   foldAllBtn.addEventListener('click', () => normalizeFolds(true, 1));
   unfoldAllBtn.addEventListener('click', () => normalizeFolds(false, 5));
 
-  return () => {
-    widget.remove();
-    window.cancelAnimationFrame(rafNum);
+  // return () => {
+  //   widget.remove();
+  //   window.cancelAnimationFrame(rafNum);
+  // };
+  // 修改为：
+  const refresh = () => {
+    // 1. 重新抓取 headings
+    const newHeadings = document.querySelectorAll<HTMLHeadingElement>(`${selectorPart1} :is(${selectorPart2})`);
+
+    // 2. 如果标题没变，直接跳过，保护性能
+    const newHash = Array.from(newHeadings)
+      .map((h) => h.id + h.textContent)
+      .join('|');
+    if (newHash === (window as any).__lastTocHash) return;
+    (window as any).__lastTocHash = newHash;
+
+    // 3. 更新内部引用的 headings 数组
+    // 注意：你需要确保 headings 变量不是 const，改为 let
+    (headings as any) = newHeadings;
+
+    // 4. 清空并重新生成目录树
+    const newToc = genToc(newHeadings);
+    if (newToc) {
+      toc.innerHTML = '';
+      toc.append(newToc);
+
+      // 5. 重新映射 anchor 关系（否则高亮逻辑会失效）
+      idToAnchorMap = {}; // 确保 idToAnchorMap 改为 let
+      newToc.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
+        const id = a.getAttribute('href')?.slice(1);
+        if (id) idToAnchorMap[id] = a;
+        const divs = getAncestors(a, 'foldable', classPrefix);
+        anchorToAncestorFoldableDivsMap.set(a, divs);
+      });
+    }
+  };
+
+  return {
+    destroy: () => {
+      widget.remove();
+      window.cancelAnimationFrame(rafNum);
+    },
+    refresh: refresh,
   };
 }

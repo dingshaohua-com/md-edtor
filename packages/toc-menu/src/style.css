@@ -1,0 +1,29 @@
+.toc-list {
+  list-style: none;
+  padding: 0;
+  border-left: 2px solid #e5e7eb; /* 侧边线 */
+}
+
+.toc-item {
+  padding: 4px 12px;
+  font-size: 14px;
+  transition: all 0.2s;
+  border-left: 2px solid transparent;
+  margin-left: -2px; /* 覆盖侧边线 */
+}
+
+/* 根据层级缩进 */
+.level-3 { padding-left: 24px; }
+.level-4 { padding-left: 36px; }
+
+/* 高亮样式 */
+.toc-item.active {
+  color: #3b82f6; /* 蓝色 */
+  border-left-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.toc-item a {
+  text-decoration: none;
+  color: inherit;
+}

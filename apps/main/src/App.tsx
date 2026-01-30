@@ -12,14 +12,14 @@ import Toolbar from '@/compnents/toolbar';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { highlight, highlightPluginConfig, parser } from '@/utils/code-helight-helper';
 import computeSelectedFmt from '@/utils/compute-selected-fmt';
+import useTocMenu from './hook/use-toc-menu';
 import { mdInitContent } from './utils/mock-data';
-
 import neotoc from './utils/neotoc-helper';
 
 function MilkdownEditor() {
   const tocRef = useRef<HTMLElement>(null);
   const milkdownRef = useRef<HTMLElement>(null);
-  // useTocMenu(tocRef);
+  const tocMenu = useTocMenu(tocRef);
   const { get } = useEditor((root) =>
     Editor.make()
       .config((ctx) => {
@@ -35,13 +35,15 @@ function MilkdownEditor() {
           });
         });
         ctx.get(listenerCtx).mounted((ctx) => {
-          neotoc.init(tocRef.current!);
+          // neotoc.init(tocRef.current!);
+          tocMenu.init(tocRef.current!)
         });
 
         ctx.get(listenerCtx).updated((ctx, doc, prevDoc) => {
           // tocInstance.refresh();
           console.log('文档已更新，目录同步中...');
-          neotoc.update()
+          // neotoc.refresh()
+          tocMenu.refresh()
         });
         // ctx.set(editorViewOptionsCtx, { editable: () => false });
       })
