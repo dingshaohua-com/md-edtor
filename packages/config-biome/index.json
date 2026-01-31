@@ -42,6 +42,9 @@
       },
       "style": {
         "noNonNullAssertion": "off"
+      },
+      "suspicious": {
+        "noAssignInExpressions": "off"
       }
     }
   }

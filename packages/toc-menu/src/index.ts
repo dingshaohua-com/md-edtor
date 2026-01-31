@@ -17,10 +17,9 @@ export class TocMenu {
   private getTocData(): TocItem[] {
     const headings = document.querySelectorAll('.milkdown .editor h2, .milkdown .editor h3, .milkdown .editor h4');
     return Array.from(headings).map((h) => ({
-      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
       id: h.id || (h.id = `heading-${Math.random().toString(36).slice(2, 7)}`), // 确保有 ID
       text: h.textContent || '',
-      level: parseInt(h.tagName[1]),
+      level: parseInt(h.tagName[1], 10),
     }));
   }
 
@@ -29,11 +28,15 @@ export class TocMenu {
     target.innerHTML = `
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        ${items.map(item => `
+        ${items
+          .map(
+            (item) => `
           <li class="toc-item level-${item.level}" data-id="${item.id}">
             <a href="#${item.id}">${item.text}</a>
           </li>
-        `).join('')}
+        `,
+          )
+          .join('')}
       </ul>
     `;
   }
@@ -53,20 +56,23 @@ export class TocMenu {
     if (this.observer) this.observer.disconnect();
 
     // 创建新观测器：监控标题何时进入视口顶部
-    this.observer = new IntersectionObserver((entries) => {
-      // 找到当前正在视口上方的标题
-      const visibleEntry = entries.find(entry => entry.isIntersecting);
-      if (visibleEntry) {
-        this.highlight(visibleEntry.target.id);
-      }
-    }, {
-      // rootMargin 的 top 值设为负的 offsetTop，意味着“触发线”在距离顶部 80px 的位置
-      rootMargin: `-${this.options.offsetTop}px 0px -80% 0px`, 
-      threshold: 0
-    });
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        // 找到当前正在视口上方的标题
+        const visibleEntry = entries.find((entry) => entry.isIntersecting);
+        if (visibleEntry) {
+          this.highlight(visibleEntry.target.id);
+        }
+      },
+      {
+        // rootMargin 的 top 值设为负的 offsetTop，意味着“触发线”在距离顶部 80px 的位置
+        rootMargin: `-${this.options.offsetTop}px 0px -80% 0px`,
+        threshold: 0,
+      },
+    );
 
     // 开始观测所有标题
-    items.forEach(item => {
+    items.forEach((item) => {
       const el = document.getElementById(item.id);
       if (el) this.observer?.observe(el);
     });
@@ -78,10 +84,9 @@ export class TocMenu {
     this.activeId = id;
 
     // 清除旧高亮
-    // biome-ignore lint/suspicious/useIterableCallbackReturn: <explanation>
-        this.container?.querySelectorAll('.toc-item').forEach(el => 
-      el.classList.remove('active')
-    );
+    this.container?.querySelectorAll('.toc-item').forEach((el) => {
+      el.classList.remove('active');
+    });
     // 添加新高亮
     const activeEl = this.container?.querySelector(`[data-id="${id}"]`);
     activeEl?.classList.add('active');
