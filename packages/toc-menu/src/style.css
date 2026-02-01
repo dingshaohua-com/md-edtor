@@ -13,8 +13,8 @@
 }
 
 /* 根据层级缩进 */
-.level-3 { padding-left: 24px; }
-.level-4 { padding-left: 36px; }
+.level-3 { padding-left: 30px; }
+.level-4 { padding-left: 40px; }
 
 /* 高亮样式 */
 .toc-item.active {

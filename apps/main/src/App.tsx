@@ -38,7 +38,7 @@ function MilkdownEditor() {
         });
         ctx.get(listenerCtx).mounted((ctx) => {
           // neotoc.init(tocRef.current!);
-          tocMenu.init(scrollRef.current!, tocRef.current!)
+          tocMenu.init(scrollRef.current!, tocRef.current!);
         });
 
         ctx.get(listenerCtx).updated((ctx, doc, prevDoc) => {
@@ -67,11 +67,11 @@ function MilkdownEditor() {
   return (
     <div className="milkdown-editor w-full h-full flex flex-col">
       <Toolbar />
-      <div className="prose-custom flex-1 min-h-0 border-amber-200 border-2 flex overflow-auto justify-center relative scroll-smooth" ref={scrollRef}>
-        <main className="flex-1 min-h-0 max-w-220" ref={milkdownRef}>
+      <div className="prose-custom flex-1 min-h-0 border-amber-200 border-2 flex overflow-auto justify-center relative" ref={scrollRef}>
+        <main className="flex-1 min-h-0 max-w-220 px-2" ref={milkdownRef}>
           <Milkdown />
         </main>
-        <aside className="text-sm w-60 sticky top-10 h-fit ml-12" ref={tocRef} />
+        <aside className="text-sm w-60 sticky top-10 h-fit" ref={tocRef} />
       </div>
     </div>
   );
@@ -87,8 +87,17 @@ function MilkdownEditorWrapper() {
 
 export default function Demo() {
   return (
-    <div className="w-400 h-200 border-red-300 border-2 m-auto mt-10">
-      <MilkdownEditorWrapper />
-    </div>
+    <>
+      <div className="w-100vh max-w-270 h-200 border-red-300 border-2 m-auto mt-10">
+        <MilkdownEditorWrapper />
+      </div>
+      {/* <div className="h-200 bg-amber-400"></div>
+      <div id="abc">哈哈</div>
+      <div className="h-200 bg-amber-400"></div>
+      <div>
+        <div id="def">呵呵 </div>
+      </div>
+      <div id="def">呵呵 </div> */}
+    </>
   );
 }
