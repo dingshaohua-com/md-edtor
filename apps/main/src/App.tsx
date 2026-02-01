@@ -1,4 +1,5 @@
 import '@/assets/style/public.css';
+import '@repo/toc-menu/style.css';
 import { tableBlock } from '@milkdown/kit/component/table-block';
 import { defaultValueCtx, Editor, editorViewOptionsCtx, rootCtx } from '@milkdown/kit/core';
 import { cursor } from '@milkdown/kit/plugin/cursor';
@@ -7,12 +8,12 @@ import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
+import { TocMenu } from '@repo/toc-menu';
 import { useEffect, useRef } from 'react';
 import Toolbar from '@/compnents/toolbar';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { highlight, highlightPluginConfig, parser } from '@/utils/code-helight-helper';
 import computeSelectedFmt from '@/utils/compute-selected-fmt';
-import useTocMenu from './hook/use-toc-menu';
 import { mdInitContent } from './utils/mock-data';
 
 // import neotoc from './utils/neotoc-helper';
@@ -20,8 +21,6 @@ import { mdInitContent } from './utils/mock-data';
 function MilkdownEditor() {
   const scrollRef = useRef<HTMLElement>(null);
   const tocRef = useRef<HTMLElement>(null);
-  const milkdownRef = useRef<HTMLElement>(null);
-  const tocMenu = useTocMenu();
   const { get } = useEditor((root) =>
     Editor.make()
       .config((ctx) => {
@@ -36,16 +35,13 @@ function MilkdownEditor() {
             // tocbot.refresh()
           });
         });
+        let tocMenu: TocMenu;
         ctx.get(listenerCtx).mounted((ctx) => {
-          // neotoc.init(tocRef.current!);
-          tocMenu.init(scrollRef.current!, tocRef.current!);
+          tocMenu = new TocMenu({ contentElement: scrollRef.current!, tocElement: tocRef.current!, useHash: true });
         });
 
         ctx.get(listenerCtx).updated((ctx, doc, prevDoc) => {
-          // tocInstance.refresh();
-          console.log('文档已更新，目录同步中...');
-          // neotoc.refresh()
-          // tocMenu.refresh()
+          tocMenu.refresh();
         });
         // ctx.set(editorViewOptionsCtx, { editable: () => false });
       })
@@ -68,7 +64,7 @@ function MilkdownEditor() {
     <div className="milkdown-editor w-full h-full flex flex-col">
       <Toolbar />
       <div className="prose-custom flex-1 min-h-0 border-amber-200 border-2 flex overflow-auto justify-center relative" ref={scrollRef}>
-        <main className="flex-1 min-h-0 max-w-220 px-2" ref={milkdownRef}>
+        <main className="flex-1 min-h-0 max-w-220 px-2">
           <Milkdown />
         </main>
         <aside className="text-sm w-60 sticky top-10 h-fit" ref={tocRef} />

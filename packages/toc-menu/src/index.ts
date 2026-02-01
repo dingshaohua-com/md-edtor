@@ -1,64 +1,82 @@
-interface TocItem {
-  id: string;
-  text: string;
-  level: number;
-}
+import type { Config, TocItem } from './type';
+import { checkIsBottom, checkScrollMove, getHash, renderTocHelper, scanHeadings } from './utils';
 
-interface Config {
-  contentElement: Document | HTMLElement;
-  tocElement: HTMLElement;
-  useHash: boolean;
-}
-
-// threshold: Array.from({ length: 10 }, (_, i) => i * 0.1),
 export class TocMenu {
   private tocData: TocItem[] = [];
   private config: Config = {
-    contentElement: document,
+    contentElement: document.body,
     tocElement: document.createElement('DIV'),
     useHash: true,
   };
-  private observer: IntersectionObserver;
-
-  // 针对spa或异步等无法正确初始化锚点位置问题
-  initScroll() {
-    const { hash } = window.location;
-    if (hash) {
-      const id = decodeURIComponent(hash.substring(1));
-      const decodedHash = decodeURIComponent(id);
-      const resizeObserver = new ResizeObserver(() => {
-        const element = document.getElementById(decodedHash);
-        this.doHighlight(decodedHash);
-        if (element) {
-          element.scrollIntoView();
-          this.config.contentElement.addEventListener(
-            'scrollend',
-            () => {
-              this.initBottomListener();
-            },
-            { once: true },
-          );
-          resizeObserver.disconnect();
-        }
-      });
-      resizeObserver.observe(document.body);
-    } else {
-      console.log('最终也执行了');
-      setTimeout(() => {
-        this.initBottomListener();
-      });
-    }
-  }
+  private observer!: IntersectionObserver;
+  private isManualScrolling = false; // 是否手动滚动
 
   constructor(config: Config) {
-    this.initScroll();
     this.config = { ...this.config, ...config };
-    this.syncTocData();
+    this.tocData = scanHeadings(this.config.contentElement);
     this.renderToc();
-    // 开始观测所有标题(高亮)
-    this.observer = new IntersectionObserver(this.onObserver.bind(this), {
+    this.initScroll();
+    this.initIntersection();
+  }
+
+  /**
+   * 滚动条需要初始化的操作
+   * 可解决针对SPA或异步内容，导致无法正确初始化锚点位置问题
+   */
+  initScroll() {
+    // 在 scroll 事件中保底， 而不是在 Observer 中
+    const onScroll = () => {
+      const container = this.config.contentElement;
+      const onScrollHandler = () => {
+        if (this.isManualScrolling) return;
+        const isBottom = checkIsBottom(container);
+        // 此时不再信任 IntersectionObserver 的“碰线”逻辑：直接把高亮给最后一个
+        if (isBottom) this.doHighlight(this.tocData[this.tocData.length - 1].id);
+      };
+      container.addEventListener('scroll', onScrollHandler, { passive: true });
+    };
+    // 初始化Hash
+    const hash = getHash();
+    if (hash) {
+      const resizeObserver = new ResizeObserver(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          this.doHighlight(hash);
+          element.scrollIntoView();
+          this.config.contentElement.addEventListener('scrollend', onScroll, { once: true });
+          resizeObserver.disconnect();
+        } else console.error('锚点不存在哦');
+      });
+      resizeObserver.observe(document.body);
+    } else requestAnimationFrame(() => onScroll());
+  }
+
+  /**
+   * 渲染toc组件，并设置点击事件
+   */
+  private renderToc(activeId = '') {
+    renderTocHelper(activeId, this.config.tocElement, this.tocData, (anchorId: string) => {
+      this.handleTocClick(anchorId);
+    });
+  }
+
+  /**
+   * 开始观测所有标题(是否进入可视检测区域)
+   */
+  private initIntersection() {
+    const onObserver = (entries?: IntersectionObserverEntry[]) => {
+      if (entries && entries.length > 0 && !this.isManualScrolling) {
+        const intersectingEntries = entries.filter((entry) => entry.isIntersecting);
+        if (intersectingEntries.length > 0) {
+          const targetId = intersectingEntries[intersectingEntries.length - 1].target.id;
+          this.doHighlight(targetId);
+        }
+      }
+    };
+    this.observer = new IntersectionObserver(onObserver, {
       root: this.config.contentElement,
       rootMargin: '0px 0px -90% 0px', // 根元素的外边距
+      // threshold: Array.from({ length: 10 }, (_, i) => i * 0.1),
     });
     this.tocData.forEach((item) => {
       const el = document.getElementById(item.id);
@@ -66,121 +84,62 @@ export class TocMenu {
     });
   }
 
-  // 扫描 Milkdown 里的标题
-  private syncTocData(): TocItem[] {
-    const headings = this.config.contentElement.querySelectorAll('h2,h3,h4');
-    this.tocData = Array.from(headings).map((h) => ({
-      id: h.id || (h.id = `heading-${Math.random().toString(36).slice(2, 7)}`),
-      text: h.textContent || '',
-      level: parseInt(h.tagName[1], 10),
-    }));
-    return this.tocData;
-  }
-
-  // 渲染目录 DOM
-  private renderToc() {
-    this.config.tocElement.innerHTML = `
-      <div class="toc-title">目录</div>
-      <ul class="toc-list">
-        ${this.tocData
-          .map(
-            (item) => `
-          <li class="toc-item level-${item.level}" data-id="${item.id}">
-            <a href="#${item.id}" data-anchor="${item.id}">${item.text}</a>
-          </li>
-        `,
-          )
-          .join('')}
-      </ul>
-    `;
-    // 2. 绑定事件委托
-    const container = this.config.tocElement.querySelector('.toc-list');
-    container?.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      // 确保点击的是 a 标签
-      const anchorId = target.getAttribute('data-anchor');
-
-      if (anchorId) {
-        e.preventDefault(); // 阻止原生跳转
-        this.handleTocClick(anchorId); // 调用你的处理逻辑
-      }
-    });
-  }
-
-  private isManualScrolling = false;
+  /**
+   *
+   * 锚点点击事件
+   * 注意：手动滚动的时候要求点击后即可高亮，此时IntersectionObserver应放弃onObserver
+   * 所以我们定义了isManualScrolling来锁它这个操作
+   */
   private handleTocClick(anchorId: string) {
-    // 1. 开启锁定
     this.isManualScrolling = true;
-    // 2. 立即执行高亮（点击驱动）
     this.doHighlight(anchorId);
-    // 3. 执行滚动
     const targetEl = document.getElementById(decodeURIComponent(anchorId));
-    const container = this.config.contentElement as HTMLElement;
+    const container = this.config.contentElement;
 
     if (targetEl) {
       history.pushState(null, '', `#${anchorId}`);
       // ---  如果点击目标和当前位置相等，说名不需要执行滚动 (防止原地踏步导致的锁死) ---
-      const startTop = container.scrollTop;
-      const maxScroll = container.scrollHeight - container.clientHeight;
-      const targetTop = Math.max(0, Math.min(targetEl.offsetTop, maxScroll));
-      if (Math.abs(startTop - targetTop) < 1) {
-        this.isManualScrolling = false;
-        return;
-      }
+      const isMove = checkScrollMove(container, targetEl);
+      if (!isMove) return (this.isManualScrolling = false);
 
       // --- 否则才滚动 ---
       targetEl.scrollIntoView({ behavior: 'smooth' });
-      container.addEventListener(
-        'scrollend',
-        () => {
-          this.isManualScrolling = false;
-        },
-        { once: true },
-      );
+      container.addEventListener('scrollend', () => (this.isManualScrolling = false), { once: true });
     }
   }
 
-  // 在 scroll 事件中保底，而不是在 Observer 中
-  private initBottomListener() {
-    console.log('initBottomListener');
-
-    const container = this.config.contentElement as HTMLElement;
-    container.addEventListener(
-      'scroll',
-      () => {
-        if (this.isManualScrolling) return;
-
-        const { scrollTop, scrollHeight, clientHeight } = container;
-        // 只要滚动超过了 95% 的进度
-        if (scrollTop + clientHeight >= scrollHeight - 50) {
-          // 此时不再信任 IntersectionObserver 的“碰线”逻辑
-          // 直接把高亮给最后一个
-          this.doHighlight(this.tocData[this.tocData.length - 1].id);
-        }
-      },
-      { passive: true },
-    );
-  }
-
-  private onObserver(entries?: IntersectionObserverEntry[]) {
-    if (entries && entries.length > 0 && !this.isManualScrolling) {
-      const intersectingEntries = entries.filter((entry) => entry.isIntersecting);
-      console.log(intersectingEntries.map((it) => it.target.id));
-      if (intersectingEntries.length > 0) {
-        const targetId = intersectingEntries[intersectingEntries.length - 1].target.id;
-        this.doHighlight(targetId);
-      }
-    }
-  }
-
-  // 高亮逻辑：操作 CSS 类
+  /**
+   * 锚点高亮逻辑：操作 CSS 类
+   * @param id
+   * @returns
+   */
   private doHighlight(id: string) {
     const target = this.config.tocElement;
     if (!target) return;
     const items = target.querySelectorAll('.toc-item');
     items.forEach((el) => {
-      // 使用 toggle 的第二个参数更加简洁
       el.classList.toggle('active', el.getAttribute('data-id') === id);
     });
+  }
+
+  /**
+   * 刷新 TOC 状态
+   * 适用于编辑器内容变更、异步数据加载等场景
+   */
+  public refresh() {
+    // 1. 停止之前的观测，防止内存泄漏和冗余回调
+    this.observer?.disconnect();
+    // 2. 重新扫描最新的标题数据
+    this.tocData = scanHeadings(this.config.contentElement);
+    // 3. 重新渲染 TOC 菜单 UI
+    this.renderToc();
+    // 4. 重新初始化 IntersectionObserver 监听最新的 DOM 节点
+    this.tocData.forEach((item) => {
+      const el = document.getElementById(item.id);
+      if (el) this.observer?.observe(el);
+    });
+    // 5. 保底逻辑：如果刷新后页面就在顶部/底部，手动触发一次高亮校准
+    const container = this.config.contentElement;
+    if (checkIsBottom(container)) this.doHighlight(this.tocData[this.tocData.length - 1]?.id);
   }
 }
