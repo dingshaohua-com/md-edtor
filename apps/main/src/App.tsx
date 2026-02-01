@@ -1,5 +1,5 @@
 import '@/assets/style/public.css';
-import '@repo/toc-menu/style.css';
+import 'toc-nav/style.css';
 import { tableBlock } from '@milkdown/kit/component/table-block';
 import { defaultValueCtx, Editor, editorViewOptionsCtx, rootCtx } from '@milkdown/kit/core';
 import { cursor } from '@milkdown/kit/plugin/cursor';
@@ -8,15 +8,13 @@ import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
-import { TocMenu } from '@repo/toc-menu';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import { TocMenu } from 'toc-nav';
 import Toolbar from '@/compnents/toolbar';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { highlight, highlightPluginConfig, parser } from '@/utils/code-helight-helper';
 import computeSelectedFmt from '@/utils/compute-selected-fmt';
 import { mdInitContent } from './utils/mock-data';
-
-// import neotoc from './utils/neotoc-helper';
 
 function MilkdownEditor() {
   const scrollRef = useRef<HTMLElement>(null);

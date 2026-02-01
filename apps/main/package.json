@@ -16,8 +16,6 @@
     "@milkdown/react": "^7.18.0",
     "@remixicon/react": "^4.9.0",
     "@repo/milkdown-plugin": "workspace:*",
-    "@repo/neotoc": "workspace:*",
-    "@repo/toc-menu": "workspace:*",
     "@repo/ui-custom": "workspace:*",
     "@types/lodash-es": "^4.17.12",
     "highlight.js": "^11.11.1",
@@ -25,7 +23,8 @@
     "lowlight": "^3.3.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "zustand": "^5.0.10"
+    "toc-nav": "^0.0.2",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
