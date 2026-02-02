@@ -9,7 +9,7 @@ import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
 import { useRef } from 'react';
-import { TocMenu } from 'toc-nav';
+import { TocNav } from 'toc-nav';
 import Toolbar from '@/compnents/toolbar';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { highlight, highlightPluginConfig, parser } from '@/utils/code-helight-helper';
@@ -33,9 +33,9 @@ function MilkdownEditor() {
             // tocbot.refresh()
           });
         });
-        let tocMenu: TocMenu;
+        let tocMenu: TocNav;
         ctx.get(listenerCtx).mounted((ctx) => {
-          tocMenu = new TocMenu({ contentElement: scrollRef.current!, tocElement: tocRef.current!, useHash: true });
+          tocMenu = new TocNav({ contentElement: scrollRef.current!, tocElement: tocRef.current!, useHash: true });
         });
 
         ctx.get(listenerCtx).updated((ctx, doc, prevDoc) => {
