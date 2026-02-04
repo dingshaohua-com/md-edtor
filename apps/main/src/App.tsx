@@ -81,17 +81,8 @@ function MilkdownEditorWrapper() {
 
 export default function Demo() {
   return (
-    <>
-      <div className="w-100vh max-w-270 h-200 border-red-300 border-2 m-auto mt-10">
-        <MilkdownEditorWrapper />
-      </div>
-      {/* <div className="h-200 bg-amber-400"></div>
-      <div id="abc">哈哈</div>
-      <div className="h-200 bg-amber-400"></div>
-      <div>
-        <div id="def">呵呵 </div>
-      </div>
-      <div id="def">呵呵 </div> */}
-    </>
+    <div className="w-100vh max-w-270 h-200 border-red-300 border-2 m-auto mt-10">
+      <MilkdownEditorWrapper />
+    </div>
   );
 }

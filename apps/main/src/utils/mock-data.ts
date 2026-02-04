@@ -28,8 +28,11 @@ export const mdInitContent = `
 
 在 2026 年的今天，远程办公已不再是应急之举，而是一种主流的生产力形态。本手册旨在通过标准化流程，解决跨时区协作中的沟通损耗与信任构建问题。
 
->[!TIP]
+> [!TIP]
 >提示内容，支持多段落。
+
+> [!NOTE]
+this is informational
 
 > 呵呵
 
