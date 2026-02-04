@@ -1,6 +1,5 @@
 import '@/assets/style/public.css';
 import 'toc-nav/style.css';
-import '@repo/milkdown-plugin/custom-container.css';
 import { tableBlock } from '@milkdown/kit/component/table-block';
 import { defaultValueCtx, Editor, editorViewOptionsCtx, rootCtx } from '@milkdown/kit/core';
 import { cursor } from '@milkdown/kit/plugin/cursor';
@@ -8,7 +7,6 @@ import { codeBlockSchema, commonmark, headingIdGenerator } from '@milkdown/kit/p
 import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
-import customContainer from '@repo/milkdown-plugin/custom-container.ts';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
 import { useRef } from 'react';
 import { TocNav } from 'toc-nav';
@@ -57,8 +55,7 @@ function MilkdownEditor() {
       .use(highlight)
       .use(cursor)
       .use(tableBlock)
-      .use(trailingParagraph)
-      .use(customContainer) ,
+      .use(trailingParagraph),
   );
 
   return (
