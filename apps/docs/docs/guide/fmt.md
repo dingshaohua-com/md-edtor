@@ -120,8 +120,6 @@ ctx.get(listenerCtx).selectionUpdated((ctx) => {
     const isBold = empty 
       ? !!boldType.isInSet(state.storedMarks || state.selection.$from.marks()) 
       : state.doc.rangeHasMark(from, to, boldType);
-
-    console.log('是否加粗：', isBold);
   });
 });
 

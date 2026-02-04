@@ -25,10 +25,22 @@ export const bars = [
         tooltip: '链接',
       },
       {
-        id:'strike',
+        id: 'strike',
         icon: RiStrikethrough,
         tooltip: '删除线',
-      }
+      },
     ],
   },
 ];
+
+export const headingOptions = [
+  { value: 0, label: '正文' },
+  { value: 1, label: '一级标题' },
+  { value: 2, label: '二级标题' },
+  { value: 3, label: '三级标题' },
+  { value: 4, label: '四级标题' },
+];
+
+export const getCurrentHeadingLevel = (headingLevel: number) => {
+  return headingOptions.some((opt) => opt.value === headingLevel) ? headingLevel : 0;
+};

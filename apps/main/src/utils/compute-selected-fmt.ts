@@ -1,6 +1,6 @@
 import { editorViewCtx } from '@milkdown/kit/core';
 import type { Ctx } from '@milkdown/kit/ctx';
-import { emphasisSchema, inlineCodeSchema, linkSchema, strongSchema } from '@milkdown/kit/preset/commonmark';
+import { emphasisSchema, headingSchema, inlineCodeSchema, linkSchema, strongSchema } from '@milkdown/kit/preset/commonmark';
 import { strikethroughSchema } from '@milkdown/kit/preset/gfm';
 import type { SelectedFmtType } from '@/store/useSeletedFmt';
 
@@ -20,11 +20,17 @@ export default function (ctx: Ctx): SelectedFmtType {
 
   // 3. 执行判断（逻辑和你之前的一致）
   const isBold = empty ? !!boldType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, boldType);
-  console.log('是否加粗：', isBold);
 
   const isItalic = empty ? !!emphasisType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, emphasisType);
   const isInlineCode = empty ? !!inlineCodeType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, inlineCodeType);
   const isLink = empty ? !!linkType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, linkType);
   const isStrike = empty ? !!strikeType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, strikeType);
-  return { isBold, isItalic, isInlineCode, isLink, isStrike };
+
+  // 4. 检测当前块的标题级别
+  const headingType = headingSchema.type(ctx);
+  const $from = state.selection.$from;
+  const parentNode = $from.parent;
+  const headingLevel = parentNode.type === headingType ? (parentNode.attrs.level as number) : 0;
+
+  return { isBold, isItalic, isInlineCode, isLink, isStrike, headingLevel };
 }
