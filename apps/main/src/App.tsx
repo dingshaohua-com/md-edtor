@@ -3,7 +3,7 @@ import 'toc-nav/style.css';
 import { tableBlock } from '@milkdown/kit/component/table-block';
 import { defaultValueCtx, Editor, editorViewOptionsCtx, rootCtx } from '@milkdown/kit/core';
 import { cursor } from '@milkdown/kit/plugin/cursor';
-import { codeBlockSchema, commonmark, headingIdGenerator } from '@milkdown/kit/preset/commonmark';
+import { codeBlockSchema, commonmark, headingIdGenerator, linkSchema } from '@milkdown/kit/preset/commonmark';
 import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
