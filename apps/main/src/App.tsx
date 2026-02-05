@@ -40,6 +40,11 @@ function MilkdownEditor() {
 
         ctx.get(listenerCtx).updated((ctx, doc, prevDoc) => {
           tocMenu.refresh();
+          // 文档变更时（如点击加粗/斜体等）也刷新格式状态，否则工具栏不会立即高亮
+          requestAnimationFrame(() => {
+            const result = computeSelectedFmt(ctx);
+            useSelectedFmt.getState().setFmts(result);
+          });
         });
         // ctx.set(editorViewOptionsCtx, { editable: () => false });
       })
