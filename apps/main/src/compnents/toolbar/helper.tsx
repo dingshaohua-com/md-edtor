@@ -1,4 +1,27 @@
 import { RiBold, RiCodeAiLine, RiEmphasisCn, RiItalic, RiLink, RiStrikethrough, RiUnderline } from '@remixicon/react';
+import { editorViewCtx } from "@milkdown/kit/core";
+import type { Ctx } from "@milkdown/kit/ctx";
+import type { EditorState, Selection } from "@milkdown/kit/prose/state";
+import type { EditorView } from "@milkdown/kit/prose/view";
+import { useInstance } from "@milkdown/react";
+
+
+export const getEditor = (): { ctx: Ctx; view: EditorView; state: EditorState; selection: Selection; from: number; to: number } => {
+  const [, get] = useInstance();
+  const ctx = get()?.ctx!;
+  const view = ctx.get(editorViewCtx)!;
+  const { state } = view;
+  const selection = state.selection;
+  const { from, to } = selection;
+  return {
+      ctx,
+      view,
+      state,
+      selection,
+      from, 
+      to
+  }
+};
 
 export const bars = [
   {
