@@ -9,6 +9,7 @@ import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import { githubAlert } from '@repo/milkdown-plugin/github-alert.ts';
+import inlineLinkInput from '@repo/milkdown-plugin/inline-link-input.ts';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
 import { useRef } from 'react';
 import { TocNav } from 'toc-nav';
@@ -69,6 +70,7 @@ function MilkdownEditor() {
       .use(highlight)
       .use(cursor)
       .use(tableBlock)
+      .use(inlineLinkInput)
       .use(trailingParagraph),
   );
 

@@ -49,6 +49,8 @@ export const mdInitContent = `
 
 高效的[远程团队](https://www.baidu.com)首先需要一套稳健的数字基石。
 
+![xxx](https://s41.ax1x.com/2026/02/09/pZ77qhD.jpg)
+
 ### 1.1 异步沟通工具链
 
 远程协作的精髓在于**异步为主，同步为辅**。
