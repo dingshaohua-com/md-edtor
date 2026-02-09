@@ -8,6 +8,7 @@ import { codeBlockSchema, commonmark } from '@milkdown/kit/preset/commonmark';
 import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
+import { githubAlert } from '@repo/milkdown-plugin/github-alert.ts';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
 import { useRef } from 'react';
 import { TocNav } from 'toc-nav';
@@ -60,6 +61,7 @@ function MilkdownEditor() {
         ctx.get(listenerCtx).selectionUpdated(milkdownEvents.onSelectionUpdated);
         ctx.get(listenerCtx).updated(milkdownEvents.onUpdated);
       })
+      .use(githubAlert)
       .use(commonmark)
       .use(customCodeBlockSchema)
       .use(gfm)

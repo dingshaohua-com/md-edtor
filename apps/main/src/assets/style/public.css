@@ -3,6 +3,7 @@
 @import "./typography-fix.css";
 @import "./table-block.css";
 @import "./toc-boot.css";
+@import "@repo/milkdown-plugin/github-alert.css";
 @plugin "@tailwindcss/typography";
 
 
