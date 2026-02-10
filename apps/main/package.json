@@ -18,6 +18,7 @@
     "@repo/milkdown-plugin": "workspace:*",
     "@repo/ui-custom": "workspace:*",
     "@types/lodash-es": "^4.17.12",
+    "frimousse": "^0.3.0",
     "highlight.js": "^11.11.1",
     "lodash-es": "^4.17.23",
     "lowlight": "^3.3.0",

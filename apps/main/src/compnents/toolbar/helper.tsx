@@ -1,5 +1,5 @@
 
-import { RiBold, RiCodeAiLine, RiEmphasisCn, RiItalic, RiLink, RiStrikethrough, RiUnderline } from '@remixicon/react';
+import { RiAlertLine, RiBold, RiCodeAiLine, RiEmojiStickerLine, RiImageAddLine, RiItalic, RiLink, RiStrikethrough, RiTable3 } from '@remixicon/react';
 import type { SelectedFmtType } from "@/store/useSeletedFmt";
 
 
@@ -32,6 +32,35 @@ export const bars = [
         id: 'strike',
         icon: RiStrikethrough,
         tooltip: '删除线',
+      },
+    ],
+  },
+];
+
+/** 插入类工具栏 */
+export const insertBars = [
+  {
+    type: 'insert',
+    content: [
+      {
+        id: 'image',
+        icon: RiImageAddLine,
+        tooltip: '插入图片',
+      },
+      {
+        id: 'table',
+        icon: RiTable3,
+        tooltip: '插入表格',
+      },
+      {
+        id: 'emoji',
+        icon: RiEmojiStickerLine,
+        tooltip: '插入表情',
+      },
+      {
+        id: 'alert',
+        icon: RiAlertLine,
+        tooltip: '插入提示容器',
       },
     ],
   },

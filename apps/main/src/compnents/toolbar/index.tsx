@@ -6,8 +6,12 @@ import { RiSave3Line } from '@remixicon/react';
 import { cn } from '@repo/ui-shadcn/lib/utils';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { getEditor } from '@/utils/milkdown-helper';
-import { bars, getActive, getCurrentHeadingLevel, headingOptions } from './helper';
+import AlertPopover from './alert-popover';
+import EmojiPopover from './emoji-popover';
+import { bars, getActive, getCurrentHeadingLevel, headingOptions, insertBars } from './helper';
+import ImagePopover from './image-popover';
 import LinkPopover from './link-popover';
+import TablePopover from './table-popover';
 
 export default function Toolbar() {
   const [_, get] = useInstance();
@@ -65,6 +69,19 @@ export default function Toolbar() {
             // 超链接使用 Popover 组件，如果有选中文本或者已经是链接，都可以操作
             if (id === 'link') return <LinkPopover key={id} isActive={getActive(id, selectedFmt)} />;
             return <Icon key={id} className={cn('rounded p-1 box-content cursor-pointer hover:bg-gray-200 ', { 'bg-gray-200': getActive(id, selectedFmt) })} size={16} onMouseDown={(e) => handleMouseDown(e, id)} />;
+          })}
+        </div>
+      ))}
+      <div className="w-px h-5 bg-gray-200" />
+      {/* 插入类工具栏 */}
+      {insertBars.map((bar) => (
+        <div key={bar.type} className="flex items-center gap-1">
+          {bar.content.map(({ id }) => {
+            if (id === 'image') return <ImagePopover key={id} />;
+            if (id === 'table') return <TablePopover key={id} />;
+            if (id === 'emoji') return <EmojiPopover key={id} />;
+            if (id === 'alert') return <AlertPopover key={id} />;
+            return null;
           })}
         </div>
       ))}
