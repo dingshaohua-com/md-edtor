@@ -6,6 +6,7 @@ export interface SelectedFmtType {
   isInlineCode?: boolean;
   isLink?: boolean;
   isStrike?: boolean;
+  isUnderline?: boolean;
   headingLevel?: number; // 0 表示正文，2/3/4 表示对应标题级别
   hasSelection?: boolean; // 是否有选中文本
   linkHref?: string; // 当前选中链接的 href
@@ -20,6 +21,7 @@ export const useSelectedFmt = create<SelectedFmtState>((set) => ({
   isInlineCode: false,
   isLink: false,
   isStrike: false,
+  isUnderline: false,
   headingLevel: 0,
   hasSelection: false,
   linkHref: '',

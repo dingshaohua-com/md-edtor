@@ -3,6 +3,7 @@ import { toggleEmphasisCommand, toggleInlineCodeCommand, toggleStrongCommand, wr
 import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { useInstance } from '@milkdown/react';
 import { RiFlowChart, RiSave3Line } from '@remixicon/react';
+import { toggleUnderlineCommand } from '@repo/milkdown-plugin/underline.ts';
 import { cn } from '@repo/ui-shadcn/lib/utils';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { getEditor } from '@/utils/milkdown-helper';
@@ -29,6 +30,7 @@ export default function Toolbar() {
       italic: toggleEmphasisCommand.key,
       inlineCode: toggleInlineCodeCommand.key,
       strike: toggleStrikethroughCommand.key,
+      underline: toggleUnderlineCommand.key,
     };
     const command = commandMap[id as keyof typeof commandMap];
     if (command) commands.call(command);

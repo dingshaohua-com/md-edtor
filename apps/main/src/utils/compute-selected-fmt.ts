@@ -4,6 +4,7 @@ import { emphasisSchema, headingSchema, inlineCodeSchema, linkSchema, strongSche
 import { strikethroughSchema } from '@milkdown/kit/preset/gfm';
 import type { MarkType } from '@milkdown/kit/prose/model';
 import type { EditorState } from '@milkdown/kit/prose/state';
+import { underlineSchema } from '@repo/milkdown-plugin/underline.ts';
 import type { SelectedFmtType } from '@/store/useSeletedFmt';
 
 const getLinkHref = (empty: boolean, state: EditorState, from: number, to: number, linkType: MarkType) => {
@@ -43,6 +44,7 @@ export default function (ctx: Ctx): SelectedFmtType {
   const inlineCodeType = inlineCodeSchema.type(ctx);
   const linkType = linkSchema.type(ctx);
   const strikeType = strikethroughSchema.type(ctx);
+  const underlineType = underlineSchema.type(ctx);
   const headingType = headingSchema.type(ctx);
 
   // 3. 执行判断（逻辑和你之前的一致）
@@ -51,6 +53,7 @@ export default function (ctx: Ctx): SelectedFmtType {
   const isInlineCode = empty ? !!inlineCodeType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, inlineCodeType);
   const isLink = empty ? !!linkType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, linkType);
   const isStrike = empty ? !!strikeType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, strikeType);
+  const isUnderline = empty ? !!underlineType.isInSet(state.storedMarks || state.selection.$from.marks()) : state.doc.rangeHasMark(from, to, underlineType);
 
   // 4. 获取当前块的标题级别
   const $from = state.selection.$from;
@@ -63,5 +66,5 @@ export default function (ctx: Ctx): SelectedFmtType {
   // 5. 是否有选中文本
   const hasSelection = !empty;
 
-  return { isBold, isItalic, isInlineCode, isLink, isStrike, headingLevel, hasSelection, linkHref };
+  return { isBold, isItalic, isInlineCode, isLink, isStrike, isUnderline, headingLevel, hasSelection, linkHref };
 }
