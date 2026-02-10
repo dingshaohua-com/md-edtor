@@ -1,0 +1,53 @@
+.milkdown-mermaid-container {
+  position: relative !important;
+  background-color: #f4f4f4;
+  border-radius: 6px;
+}
+
+/* 按钮默认隐藏，hover 时显示 */
+.milkdown-mermaid-controls {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  left: auto !important;
+  display: flex !important;
+  justify-content: flex-end;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+  margin: 0 !important;
+}
+
+.milkdown-mermaid-container:hover .milkdown-mermaid-controls {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* 编辑区代码样式 */
+.milkdown-mermaid-code {
+  outline: none !important;
+  border: none !important;
+  color: #555 !important;
+}
+.milkdown-mermaid-code:focus {
+  outline: none !important;
+  border: none !important;
+}
+.milkdown-mermaid-code * {
+  outline: none !important;
+  border: none !important;
+}
+.milkdown-mermaid-code .ProseMirror-selectednode,
+.milkdown-mermaid-code .selectednode,
+.milkdown-mermaid-editor .ProseMirror-selectednode,
+.milkdown-mermaid-editor .selectednode {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.milkdown-mermaid-code span,
+.milkdown-mermaid-code div {
+  outline: none !important;
+  border: none !important;
+}

@@ -8,6 +8,8 @@ import 'highlight.js/styles/github.css';
 
 // 3. 准备解析器
 const lowlight = createLowlight(common);
+// 注册 mermaid 为空语言，避免 "Unknown language" 报错（实际渲染由 mermaid 插件的 NodeView 接管）
+lowlight.register('mermaid', () => ({ name: 'mermaid', contains: [] }));
 const parser = createParser(lowlight);
 
 export {highlightPluginConfig, highlight, parser}

@@ -4,6 +4,7 @@
 @import "./table-block.css";
 @import "./toc-boot.css";
 @import "@repo/milkdown-plugin/github-alert.css";
+@import "@repo/milkdown-plugin/mermaid/style.css";
 @plugin "@tailwindcss/typography";
 
 

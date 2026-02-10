@@ -11,6 +11,7 @@ import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
 import clickableLink from '@repo/milkdown-plugin/clickable-link.ts';
 import { githubAlert } from '@repo/milkdown-plugin/github-alert.ts';
 import inlineLinkInput from '@repo/milkdown-plugin/inline-link-input.ts';
+import { mermaid } from '@repo/milkdown-plugin/mermaid/index.ts';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
 import { useRef } from 'react';
 import { TocNav } from 'toc-nav';
@@ -73,7 +74,8 @@ function MilkdownEditor() {
       .use(tableBlock)
       .use(inlineLinkInput)
       .use(trailingParagraph)
-      .use(clickableLink),
+      .use(clickableLink)
+      .use(mermaid),
   );
 
   return (

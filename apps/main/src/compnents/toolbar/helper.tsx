@@ -1,5 +1,5 @@
 
-import { RiAlertLine, RiBold, RiCodeAiLine, RiEmojiStickerLine, RiImageAddLine, RiItalic, RiLink, RiStrikethrough, RiTable3 } from '@remixicon/react';
+import { RiAlertLine, RiBold, RiCodeAiLine, RiEmojiStickerLine, RiFlowChart, RiImageAddLine, RiItalic, RiLink, RiStrikethrough, RiTable3 } from '@remixicon/react';
 import type { SelectedFmtType } from "@/store/useSeletedFmt";
 
 
@@ -61,6 +61,11 @@ export const insertBars = [
         id: 'alert',
         icon: RiAlertLine,
         tooltip: '插入提示容器',
+      },
+      {
+        id: 'mermaid',
+        icon: RiFlowChart,
+        tooltip: '插入 Mermaid 图表',
       },
     ],
   },

@@ -2,7 +2,7 @@ import { serializerCtx } from '@milkdown/kit/core';
 import { toggleEmphasisCommand, toggleInlineCodeCommand, toggleStrongCommand, wrapInHeadingCommand } from '@milkdown/kit/preset/commonmark';
 import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { useInstance } from '@milkdown/react';
-import { RiSave3Line } from '@remixicon/react';
+import { RiFlowChart, RiSave3Line } from '@remixicon/react';
 import { cn } from '@repo/ui-shadcn/lib/utils';
 import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { getEditor } from '@/utils/milkdown-helper';
@@ -44,6 +44,20 @@ export default function Toolbar() {
   };
 
   /**
+   * 插入 Mermaid 图表
+   */
+  const handleInsertMermaid = () => {
+    const { view } = getEditor(get);
+    const { state } = view;
+    const codeBlockType = state.schema.nodes.fence || state.schema.nodes.code_block;
+    if (!codeBlockType) return;
+    const template = 'graph TD\n    A[Start] --> B{Decision}\n    B -->|Yes| C[Action]\n    B -->|No| D[End]';
+    const node = codeBlockType.create({ language: 'mermaid' }, state.schema.text(template));
+    view.dispatch(state.tr.replaceSelectionWith(node));
+    view.focus();
+  };
+
+  /**
    * 保存
    */
   const handleSave = () => {
@@ -81,6 +95,7 @@ export default function Toolbar() {
             if (id === 'table') return <TablePopover key={id} />;
             if (id === 'emoji') return <EmojiPopover key={id} />;
             if (id === 'alert') return <AlertPopover key={id} />;
+            if (id === 'mermaid') return <RiFlowChart key={id} className="rounded p-1 box-content cursor-pointer hover:bg-gray-200" size={16} onMouseDown={(e) => { e.preventDefault(); handleInsertMermaid(); }} />;
             return null;
           })}
         </div>

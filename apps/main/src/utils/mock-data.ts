@@ -67,6 +67,15 @@ export const mdInitContent = `
 2. 定期更换复杂的加密密钥。
 3. 仅通过授权的加密链路访问公司内网。
 
+\`\`\`mermaid
+graph TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action 1]
+    B -->|No| D[Action 2]
+    C --> E[End]
+    D --> E
+\`\`\`
+
 
 ## 📊 第二章：项目排期与效能评估
 
