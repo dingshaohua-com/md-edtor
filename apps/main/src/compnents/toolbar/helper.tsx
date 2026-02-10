@@ -1,5 +1,5 @@
 
-import { RiAlertLine, RiBold, RiCodeAiLine, RiEmojiStickerLine, RiFlowChart, RiImageAddLine, RiItalic, RiLink, RiOmega, RiStrikethrough, RiTable3, RiUnderline } from '@remixicon/react';
+import { RiAlertLine, RiBold, RiCodeAiLine, RiEmojiStickerLine, RiFlowChart, RiImageAddLine, RiItalic, RiLink, RiListOrdered2, RiListUnordered, RiOmega, RiStrikethrough, RiTable3, RiUnderline } from '@remixicon/react';
 import type { SelectedFmtType } from "@/store/useSeletedFmt";
 
 
@@ -37,6 +37,25 @@ export const bars = [
         id: 'underline',
         icon: RiUnderline,
         tooltip: '下划线',
+      },
+    ],
+  },
+];
+
+/** 列表类工具栏 */
+export const listBars = [
+  {
+    type: 'list',
+    content: [
+      {
+        id: 'bulletList',
+        icon: RiListUnordered,
+        tooltip: '无序列表',
+      },
+      {
+        id: 'orderedList',
+        icon: RiListOrdered2,
+        tooltip: '有序列表',
       },
     ],
   },
@@ -102,6 +121,8 @@ export const getActive = (id: string, selectedFmt:SelectedFmtType ) => {
     link: selectedFmt.isLink,
     strike: selectedFmt.isStrike,
     underline: selectedFmt.isUnderline,
+    bulletList: selectedFmt.isBulletList,
+    orderedList: selectedFmt.isOrderedList,
   };
   return Boolean(fmtMap[id as keyof typeof fmtMap]);
 };

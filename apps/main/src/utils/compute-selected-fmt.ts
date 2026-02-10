@@ -1,6 +1,6 @@
 import { editorViewCtx } from '@milkdown/kit/core';
 import type { Ctx } from '@milkdown/kit/ctx';
-import { emphasisSchema, headingSchema, inlineCodeSchema, linkSchema, strongSchema } from '@milkdown/kit/preset/commonmark';
+import { bulletListSchema, emphasisSchema, headingSchema, inlineCodeSchema, linkSchema, orderedListSchema, strongSchema } from '@milkdown/kit/preset/commonmark';
 import { strikethroughSchema } from '@milkdown/kit/preset/gfm';
 import type { MarkType } from '@milkdown/kit/prose/model';
 import type { EditorState } from '@milkdown/kit/prose/state';
@@ -60,11 +60,28 @@ export default function (ctx: Ctx): SelectedFmtType {
   const parentNode = $from.parent;
   const headingLevel = parentNode.type === headingType ? (parentNode.attrs.level as number) : 0;
 
-  // 4. 获取当前链接的 href
+  // 4.1 检测当前是否在列表中（遍历父级节点）
+  const bulletListType = bulletListSchema.type(ctx);
+  const orderedListType = orderedListSchema.type(ctx);
+  let isBulletList = false;
+  let isOrderedList = false;
+  for (let depth = $from.depth; depth >= 0; depth--) {
+    const node = $from.node(depth);
+    if (node.type === bulletListType) {
+      isBulletList = true;
+      break;
+    }
+    if (node.type === orderedListType) {
+      isOrderedList = true;
+      break;
+    }
+  }
+
+  // 5. 获取当前链接的 href
   const linkHref = getLinkHref(empty, state, from, to, linkType);
 
-  // 5. 是否有选中文本
+  // 6. 是否有选中文本
   const hasSelection = !empty;
 
-  return { isBold, isItalic, isInlineCode, isLink, isStrike, isUnderline, headingLevel, hasSelection, linkHref };
+  return { isBold, isItalic, isInlineCode, isLink, isStrike, isUnderline, isBulletList, isOrderedList, headingLevel, hasSelection, linkHref };
 }

@@ -1,5 +1,5 @@
 import { serializerCtx } from '@milkdown/kit/core';
-import { toggleEmphasisCommand, toggleInlineCodeCommand, toggleStrongCommand, wrapInHeadingCommand } from '@milkdown/kit/preset/commonmark';
+import { toggleEmphasisCommand, toggleInlineCodeCommand, toggleStrongCommand, wrapInBulletListCommand, wrapInHeadingCommand, wrapInOrderedListCommand } from '@milkdown/kit/preset/commonmark';
 import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { useInstance } from '@milkdown/react';
 import { RiFlowChart, RiSave3Line } from '@remixicon/react';
@@ -9,7 +9,7 @@ import { useSelectedFmt } from '@/store/useSeletedFmt';
 import { getEditor } from '@/utils/milkdown-helper';
 import AlertPopover from './alert-popover';
 import EmojiPopover from './emoji-popover';
-import { bars, getActive, getCurrentHeadingLevel, headingOptions, insertBars } from './helper';
+import { bars, getActive, getCurrentHeadingLevel, headingOptions, insertBars, listBars } from './helper';
 import ImagePopover from './image-popover';
 import LinkPopover from './link-popover';
 import MathPopover from './math-popover';
@@ -44,6 +44,24 @@ export default function Toolbar() {
     const { view, commands } = getEditor(get);
     commands.call(wrapInHeadingCommand.key, Number(e.target.value));
     view.focus();
+  };
+
+  /**
+   * 切换列表
+   */
+  const handleListToggle = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    const { view, commands } = getEditor(get);
+    if (!commands) return;
+    const listCommandMap = {
+      bulletList: wrapInBulletListCommand.key,
+      orderedList: wrapInOrderedListCommand.key,
+    };
+    const command = listCommandMap[id as keyof typeof listCommandMap];
+    if (command) {
+      commands.call(command);
+      view.focus();
+    }
   };
 
   /**
@@ -87,6 +105,15 @@ export default function Toolbar() {
             if (id === 'link') return <LinkPopover key={id} isActive={getActive(id, selectedFmt)} />;
             return <Icon key={id} className={cn('rounded p-1 box-content cursor-pointer hover:bg-gray-200 ', { 'bg-gray-200': getActive(id, selectedFmt) })} size={16} onMouseDown={(e) => handleMouseDown(e, id)} />;
           })}
+        </div>
+      ))}
+      <div className="w-px h-5 bg-gray-200" />
+      {/* 列表类工具栏 */}
+      {listBars.map((bar) => (
+        <div key={bar.type} className="flex items-center gap-1">
+          {bar.content.map(({ icon: Icon, id }) => (
+            <Icon key={id} className={cn('rounded p-1 box-content cursor-pointer hover:bg-gray-200', { 'bg-gray-200': getActive(id, selectedFmt) })} size={16} onMouseDown={(e) => handleListToggle(e, id)} />
+          ))}
         </div>
       ))}
       <div className="w-px h-5 bg-gray-200" />
