@@ -58,7 +58,7 @@ function MilkdownEditor() {
         ctx.set(rootCtx, root);
         ctx.set(defaultValueCtx, mdInitContent);
         ctx.set(highlightPluginConfig.key, { parser });
-        ctx.set(editorViewOptionsCtx, { editable: () => false });
+        // ctx.set(editorViewOptionsCtx, { editable: () => false });
         ctx.get(listenerCtx).mounted(milkdownEvents.onMounted);
         ctx.get(listenerCtx).selectionUpdated(milkdownEvents.onSelectionUpdated);
         ctx.get(listenerCtx).updated(milkdownEvents.onUpdated);

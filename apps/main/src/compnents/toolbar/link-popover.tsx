@@ -1,6 +1,6 @@
 import { linkSchema, toggleLinkCommand, updateLinkCommand } from '@milkdown/kit/preset/commonmark';
 import { useInstance } from '@milkdown/react';
-import { RiLink } from '@remixicon/react';
+import { RiLink, RiLinkUnlink } from '@remixicon/react';
 import { Button } from '@repo/ui-shadcn/components/ui/button';
 import { Input } from '@repo/ui-shadcn/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui-shadcn/components/ui/popover';
@@ -91,8 +91,8 @@ export default function LinkPopover({ isActive }: LinkPopoverProps) {
           <Input placeholder="请输入链接地址" value={url} onChange={(e) => setUrl(e.target.value)} onKeyDown={handleKeyDown} autoFocus />
           <div className="flex justify-end gap-2">
             {currentHref && (
-              <Button variant="destructive" size="sm" onClick={handleRemove}>
-                删除链接
+              <Button variant="destructive" size="icon" className="size-8" onClick={handleRemove}>
+                <RiLinkUnlink size={16} />
               </Button>
             )}
             <Button variant="outline" size="sm" onClick={() => setOpen(false)}>
