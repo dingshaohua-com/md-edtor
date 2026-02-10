@@ -12,6 +12,7 @@ import EmojiPopover from './emoji-popover';
 import { bars, getActive, getCurrentHeadingLevel, headingOptions, insertBars } from './helper';
 import ImagePopover from './image-popover';
 import LinkPopover from './link-popover';
+import MathPopover from './math-popover';
 import TablePopover from './table-popover';
 
 export default function Toolbar() {
@@ -97,6 +98,7 @@ export default function Toolbar() {
             if (id === 'table') return <TablePopover key={id} />;
             if (id === 'emoji') return <EmojiPopover key={id} />;
             if (id === 'alert') return <AlertPopover key={id} />;
+            if (id === 'math') return <MathPopover key={id} />;
             if (id === 'mermaid') return <RiFlowChart key={id} className="rounded p-1 box-content cursor-pointer hover:bg-gray-200" size={16} onMouseDown={(e) => { e.preventDefault(); handleInsertMermaid(); }} />;
             return null;
           })}

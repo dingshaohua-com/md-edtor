@@ -5,6 +5,8 @@
 @import "./toc-boot.css";
 @import "@repo/milkdown-plugin/github-alert.css";
 @import "@repo/milkdown-plugin/mermaid/style.css";
+@import "@repo/milkdown-plugin/math/style.css";
+@import 'katex/dist/katex.min.css';
 @plugin "@tailwindcss/typography";
 
 

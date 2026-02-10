@@ -13,8 +13,12 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
+  "dependencies": {
+    "remark-math": "^6.0.0"
+  },
   "peerDependencies": {
     "@milkdown/kit": "^7.18.0",
+    "katex": ">=0.16",
     "mermaid": ">=10",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
