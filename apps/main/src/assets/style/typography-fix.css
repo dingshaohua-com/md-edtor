@@ -32,6 +32,14 @@
     /* 6. 分割线 */
     @apply prose-hr:border-[#e8e8e8] prose-hr:my-8;
 
+    /* 7. 列表：收紧列表项的上下间距 */
+    @apply prose-li:my-0 prose-ul:my-1 prose-ol:my-1;
+
+    /* 列表项内的 p 标签去掉默认边距 */
+    & li p {
+      @apply my-0;
+    }
+
     /* 仅针对【行内代码】定制样式 (排除在 pre 内部的 code) */
     :not(pre) > code {
       @apply bg-slate-100 text-pink-500 rounded px-1.5 py-0.5 mx-0.5;

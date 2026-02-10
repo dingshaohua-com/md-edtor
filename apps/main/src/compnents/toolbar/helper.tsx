@@ -19,16 +19,6 @@ export const bars = [
         tooltip: '斜体',
       },
       {
-        id: 'inlineCode',
-        icon: RiCodeAiLine,
-        tooltip: '代码行',
-      },
-      {
-        id: 'link',
-        icon: RiLink,
-        tooltip: '链接',
-      },
-      {
         id: 'strike',
         icon: RiStrikethrough,
         tooltip: '删除线',
@@ -37,6 +27,16 @@ export const bars = [
         id: 'underline',
         icon: RiUnderline,
         tooltip: '下划线',
+      },
+      {
+        id: 'inlineCode',
+        icon: RiCodeAiLine,
+        tooltip: '代码行',
+      },
+      {
+        id: 'link',
+        icon: RiLink,
+        tooltip: '链接',
       },
     ],
   },
