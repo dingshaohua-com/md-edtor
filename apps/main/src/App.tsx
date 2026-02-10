@@ -8,6 +8,7 @@ import { codeBlockSchema, commonmark } from '@milkdown/kit/preset/commonmark';
 import { gfm } from '@milkdown/kit/preset/gfm';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
+import clickableLink from '@repo/milkdown-plugin/clickable-link.ts';
 import { githubAlert } from '@repo/milkdown-plugin/github-alert.ts';
 import inlineLinkInput from '@repo/milkdown-plugin/inline-link-input.ts';
 import trailingParagraph from '@repo/milkdown-plugin/trailing-paragraph.ts';
@@ -57,7 +58,7 @@ function MilkdownEditor() {
         ctx.set(rootCtx, root);
         ctx.set(defaultValueCtx, mdInitContent);
         ctx.set(highlightPluginConfig.key, { parser });
-        // ctx.set(editorViewOptionsCtx, { editable: () => false });
+        ctx.set(editorViewOptionsCtx, { editable: () => false });
         ctx.get(listenerCtx).mounted(milkdownEvents.onMounted);
         ctx.get(listenerCtx).selectionUpdated(milkdownEvents.onSelectionUpdated);
         ctx.get(listenerCtx).updated(milkdownEvents.onUpdated);
@@ -71,7 +72,8 @@ function MilkdownEditor() {
       .use(cursor)
       .use(tableBlock)
       .use(inlineLinkInput)
-      .use(trailingParagraph),
+      .use(trailingParagraph)
+      .use(clickableLink),
   );
 
   return (
