@@ -1,5 +1,5 @@
 import { serializerCtx } from '@milkdown/kit/core';
-import { toggleEmphasisCommand, toggleInlineCodeCommand, toggleStrongCommand, wrapInBulletListCommand, wrapInHeadingCommand, wrapInOrderedListCommand } from '@milkdown/kit/preset/commonmark';
+import { liftListItemCommand, toggleEmphasisCommand, toggleInlineCodeCommand, toggleStrongCommand, wrapInBulletListCommand, wrapInHeadingCommand, wrapInOrderedListCommand } from '@milkdown/kit/preset/commonmark';
 import { toggleStrikethroughCommand } from '@milkdown/kit/preset/gfm';
 import { useInstance } from '@milkdown/react';
 import { RiFlowChart, RiSave3Line } from '@remixicon/react';
@@ -39,29 +39,47 @@ export default function Toolbar() {
 
   /**
    * 标题级别改变
+   * 块级节点互斥：如果当前在列表中，先退出列表再设置标题
    */
   const handleHeadingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { view, commands } = getEditor(get);
-    commands.call(wrapInHeadingCommand.key, Number(e.target.value));
+    const level = Number(e.target.value);
+    if (selectedFmt.isBulletList || selectedFmt.isOrderedList) {
+      commands.call(liftListItemCommand.key);
+    }
+    commands.call(wrapInHeadingCommand.key, level);
     view.focus();
   };
 
   /**
    * 切换列表
+   * 块级节点互斥：如果当前是标题，先降为段落；如果是另一种列表，先退出再包裹
    */
   const handleListToggle = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     const { view, commands } = getEditor(get);
     if (!commands) return;
-    const listCommandMap = {
-      bulletList: wrapInBulletListCommand.key,
-      orderedList: wrapInOrderedListCommand.key,
-    };
-    const command = listCommandMap[id as keyof typeof listCommandMap];
-    if (command) {
-      commands.call(command);
-      view.focus();
+    const isActive = (id === 'bulletList' && selectedFmt.isBulletList)
+      || (id === 'orderedList' && selectedFmt.isOrderedList);
+    if (isActive) {
+      commands.call(liftListItemCommand.key);
+    } else {
+      if (selectedFmt.headingLevel && selectedFmt.headingLevel > 0) {
+        commands.call(wrapInHeadingCommand.key, 0);
+      }
+      const isOtherList = (id === 'bulletList' && selectedFmt.isOrderedList)
+        || (id === 'orderedList' && selectedFmt.isBulletList);
+      if (isOtherList) {
+        commands.call(liftListItemCommand.key);
+      }
+      const listCommandMap = {
+        bulletList: wrapInBulletListCommand.key,
+        orderedList: wrapInOrderedListCommand.key,
+      };
+      const command = listCommandMap[id as keyof typeof listCommandMap];
+      if (command) commands.call(command);
     }
+    view.focus();
   };
 
   /**
