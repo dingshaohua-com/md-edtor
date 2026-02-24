@@ -24,5 +24,9 @@
     padding-bottom: 10px;
     /* 3. 确保光标不会被切掉 */
     overflow: visible;
+    
   }
+}
+a{
+  font-weight: normal;
 }
